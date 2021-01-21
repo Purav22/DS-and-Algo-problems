@@ -1,0 +1,105 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch wordBreak1",
+            "request": "launch",
+            "mainClass": "wordBreak1",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
+            "name": "Launch sendMoreMoney",
+            "request": "launch",
+            "mainClass": "sendMoreMoney",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
+            "name": "Launch Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Launch Hello",
+            "request": "launch",
+            "mainClass": "Hello",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
+            "name": "Launch Solution",
+            "request": "launch",
+            "mainClass": "Solution",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
+            "name": "Launch allInOne",
+            "request": "launch",
+            "mainClass": "allInOne",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
+            "name": "Launch combinationsPermutations",
+            "request": "launch",
+            "mainClass": "combinationsPermutations",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
+            "name": "Launch dungeon",
+            "request": "launch",
+            "mainClass": "dungeon",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
+            "name": "Launch inGameChat",
+            "request": "launch",
+            "mainClass": "inGameChat",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
+            "name": "Launch leetCode451",
+            "request": "launch",
+            "mainClass": "leetCode451",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
+            "name": "Launch leetcode42",
+            "request": "launch",
+            "mainClass": "leetcode42",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
+            "name": "Launch moveAndTurn",
+            "request": "launch",
+            "mainClass": "moveAndTurn",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
+            "name": "Launch redBlueCard",
+            "request": "launch",
+            "mainClass": "redBlueCard",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
+            "name": "Launch solutionOfDcPractical",
+            "request": "launch",
+            "mainClass": "solutionOfDcPractical",
+            "projectName": "Coding_581fedff"
+        }
+    ]
+}
