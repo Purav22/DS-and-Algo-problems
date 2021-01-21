@@ -1,4 +1,4 @@
-
+import java.util.ArrayList;
 
 public class nQueen {
     static boolean[] rowA;
@@ -132,75 +132,6 @@ public class nQueen {
     }
 
     // ***************************sudoku***************************************
-    char[][] board;
-    public boolean isValidToPlaceNumber(int r, int c, int num){
-        for(int i = 0; i < board.length; i++){
-            if(board[r][i] - '0' == num){
-                return false;
-            }
-        }
-        for(int i = 0; i < board.length; i++){
-            if(board[i][c] - '0' ==num){
-                return false;
-            }   
-        }
-        r = (r / 3) * 3;
-        c = (c / 3) * 3;
-        for(int i = 0; i < 3; i++){
-            for(int j = 0; j < 3; j++){
-                if(board[r + i][c + j] -'0' ==num)
-                    return false;
-            }
-        }
-        return true;
-
-    }
-
-    public int sudokuSolver(int idx){
-        if(idx == board.length * board[0].length){
-            return 1;
-        }
-
-        int r = idx / board[0].length;
-        int c = idx % board[0].length;
-        int count = 0;
-        if(board[r][c] != '.'){
-            return sudokuSolver(idx + 1);
-        }
-
-        for(int num = 1; num <= 9; num++){
-            if(isValidToPlaceNumber(r, c, num)){
-
-                board[r][c] = (char)('0' + num);
-                count += sudokuSolver(idx + 1);
-                board[r][c] = '.';
-            }
-        }
-        return count;
-    }
-    public boolean sudokuSolver_01(int loc[], int idx)
-    {
-        if (idx == loc.length)
-        {
-            
-            return true;
-        }
-
-        int r = loc[idx] / board[0].length;
-        int c = loc[idx] % board[0].length;
-        boolean res = false;
-
-        for (int num = 1; num <= 9; num++)
-        {
-            if (isValidToPlaceNumber(r, c, num))
-            {
-                board[r][c] = (char)('0' + num);
-                res = res || sudokuSolver_01(loc, idx + 1);
-                board[r][c] = '.';
-            }
-        }
-
-        return res;
-    }
+   
 
 }

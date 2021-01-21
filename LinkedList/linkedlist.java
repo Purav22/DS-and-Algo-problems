@@ -221,4 +221,15 @@ public class linkedlist {
 
        return getNodeAt(idx).data;
     }
+
+    public void display() throws Exception{
+        if(size() == 0){
+            throw new Exception("LinkedList is Empty");
+        }
+        Node temp = this.head;
+        while(temp != null){
+            System.out.println(temp.data);
+            temp = temp.next;
+        }
+    }
 }
