@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch allInOne",
+            "request": "launch",
+            "mainClass": "General.allInOne",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
             "name": "Launch wordBreak1",
             "request": "launch",
             "mainClass": "wordBreak1",
