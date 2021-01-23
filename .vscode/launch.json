@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch pract2_Prefix",
+            "request": "launch",
+            "mainClass": "pract2_Prefix",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
             "name": "Launch sudoku",
             "request": "launch",
             "mainClass": "sudoku",
