@@ -9,5 +9,6 @@
         "map": "cpp",
         "utility": "cpp",
         "vector": "cpp"
-    }
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
 }

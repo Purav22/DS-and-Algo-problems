@@ -150,38 +150,75 @@ public class allInOne {
         return ans;
     }
 
-
-    public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
-        lengthOfLongestSubstring("abcdabcdasdsac");
-        // int T = scan.nextInt();
-		//     while(T-- > 0){
-		//         int n = scan.nextInt();
-		//         int k = scan.nextInt();
-		//         Integer arr[] = new Integer[n];
-		//         int sum = 0;
-		        
-		//         for(int i = 0; i < n; i++){
-		//             arr[i] = scan.nextInt();
-		//             sum += arr[i];
-		//         }
-		        
-		//         if(sum < 2 * k){
-		//             System.out.println(-1);
-		//         }else if(sum == 2 * k){
-		//             System.out.println(n);
-		//         }
-		//         else{
-        //             System.out.println(CPLcodechef(arr, k ,sum));
-        //            //CPLcodechef(arr, k ,sum);
-		//         }
-		//     }
+public static ArrayList<Integer> findPrime(int n){
+    int flag;
+    ArrayList<Integer> list = new ArrayList<>();
+    for (int i = 1; i <= n; i++) {
         
-        // String text = scan.next();
-        //dcPract1(text);
+        if (i == 1 || i == 0)
+            continue;
 
-        // String ans[] = givePath(5, 5, new boolean[5][5], "", 0, 0);
-        // System.out.println(ans[0] + " " + ans[1]);
+        
+        flag = 1;
+
+        for (int j = 2; j <= i / 2; ++j) {
+            if (i % j == 0) {
+                flag = 0;
+                break;
+            }
+        }
+
+        
+        if (flag == 1)
+            list.add(i);
+
+        
     }
+    return list;
+}
+public static boolean isPrime(int n){
+    int i,m=0;      
+   
+    m=n/2;      
+    if(n==0||n==1){  
+     return false;    
+    }else{  
+     for(i=2;i<=m;i++){      
+      if(n%i==0){      
+        return false;        
+      }      
+     }      
+     return true;  
+    }
+}
+    public static void main (String[] args) throws java.lang.Exception
+	{
+		// your code goes here
+		Scanner scan = new Scanner(System.in);
+		try {
+		    
+            int T  = scan.nextInt();
+            while(T-- > 0){ 
+                int n = scan.nextInt();
+                //ArrayList<Integer> ans = findPrime(n);
+                 int count = 0;
+                 //System.out.println(ans.toString());
+                // for(int i = 1; i < ans.size(); i++){
+                //     int num = 2 + ans.get(i);
+                //     if(ans.contains(num)){
+                //         count++;
+                //     }
+                // }
+                //System.out.println(count);
+                for(int i = 3; i < n; i = i + 2){
+                    if( i + 2 < n &&isPrime(i + 2) ){
+                        count++;
+                    }
+                }
+                System.out.println(count);
+            }
+		} catch(Exception e) {
+		}
+	}
     
 }

@@ -1,8 +1,7 @@
 package LinkedList;
 
-import java.util.List;
 
-class ListNode {
+ class ListNode {
          int val;
          ListNode next;
          ListNode() {}
@@ -144,6 +143,25 @@ public class quetions {
 
         prev.next = c1 != null ? c1 : c2;
         return dummy.next;
+    }
+    
+    public ListNode mergeKLists(ListNode[] lists) {
+        if(lists.length == 0){
+            return null;
+        }
+        return mergeKLists(lists, 0, lists.length - 1);
+    }
+
+    public ListNode mergeKLists(ListNode[] lists, int si, int ei) {
+        if (si == ei)
+            return lists[si];
+
+        int mid = (si + ei) / 2;
+        ListNode list1 = mergeKLists(lists, si, mid);
+        ListNode list2 = mergeKLists(lists, mid + 1, ei);
+
+        return mergeTwoLists(list1, list2);
+        
     }
     
 }
