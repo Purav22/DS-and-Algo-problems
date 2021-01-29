@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch quetions",
+            "request": "launch",
+            "mainClass": "LinkedList.quetions",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
             "name": "Launch pract2_Prefix",
             "request": "launch",
             "mainClass": "pract2_Prefix",
