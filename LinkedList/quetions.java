@@ -221,6 +221,41 @@ public class quetions {
         return mergeTwoLists(list1, list2);
         
     }
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        int a = size(headA, 0);
+        int b = size(headB, 0);
+        
+        if(a > b){
+            int diff = a - b;
+            for(int i = 0; i< diff; i++){
+                headA= headA.next;
+            }
+            
+        }else if(b > a){
+            int diff = b - a;
+            for(int i = 0; i< diff; i++){
+                headB = headB.next;
+            }
+        }
+        while( headA!= null ){
+            if(headA == headB){
+                return headA;
+            }
+            headA= headA.next;
+            headB= headB.next;
+        }
+        return null;
+        
+        
+    }
+    public int size(ListNode head,int count){
+        if(head == null){
+            return count;
+        }
+        int ans =size(head.next, count + 1);
+        return ans;
+    }
+
     public ListNode removeNthFromEnd(ListNode head, int n) {
         // ListNode dummy = new ListNode(0);
         // dummy.next = head;
@@ -270,6 +305,83 @@ public class quetions {
         return head;
     
     }
+// 25 Leetcode
+    ListNode th = null; // temp head
+    ListNode tt = null; // temp tail
+
+    public void addFirstNode(ListNode node){
+        if(th == null){
+            th = node;
+            tt = node;
+        }
+        else{
+            node.next = th;
+            th = node;
+        }
+    }
+    public int lengthOfLL(ListNode node)
+    {
+        if (node == null)
+            return 0;
+    
+        int len = 0;
+        while (node != null)
+        {
+            node = node.next;
+            len++;
+        }
+    
+        return len;
+    }
+    
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if(head == null || head.next == null || k == 1){
+            return head;
+        }
+
+        ListNode oh = null; // oh = original head
+        ListNode ot = null; // ot = temp tail
+
+        int len = lengthOfLL(head);
+        ListNode curr = head;
+    
+        while (len >= k)
+        {
+            int tempK = k;
+            while (tempK-- > 0)
+            {
+                ListNode forw = curr.next;
+                curr.next = null;
+                addFirstNode(curr);
+                curr = forw;
+            }
+    
+            if (oh == null)
+            {
+                oh = th;
+                ot = tt;
+            }
+            else
+            {
+                ot.next = th;
+                ot = tt;
+            }
+    
+            th = null;
+            tt = null;
+            len -= k;
+        }
+    
+        ot.next = curr;
+        return oh;
+
+    }
+
+
+
+    //
+
+    
     public static void main(String[] args) {
         ListNode l1 = new ListNode(2);
         ListNode head = l1;
