@@ -191,34 +191,56 @@ public static boolean isPrime(int n){
      return true;  
     }
 }
-    public static void main (String[] args) throws java.lang.Exception
-	{
-		// your code goes here
-		Scanner scan = new Scanner(System.in);
-		try {
-		    
-            int T  = scan.nextInt();
-            while(T-- > 0){ 
-                int n = scan.nextInt();
-                //ArrayList<Integer> ans = findPrime(n);
-                 int count = 0;
-                 //System.out.println(ans.toString());
-                // for(int i = 1; i < ans.size(); i++){
-                //     int num = 2 + ans.get(i);
-                //     if(ans.contains(num)){
-                //         count++;
-                //     }
-                // }
-                //System.out.println(count);
-                for(int i = 3; i < n; i = i + 2){
-                    if( i + 2 < n &&isPrime(i + 2) ){
-                        count++;
-                    }
+public static void main (String[] args) throws java.lang.Exception
+{
+    // your code goes here
+    Scanner scan = new Scanner(System.in);
+    try {
+        
+        int T = scan.nextInt();
+        while(T-- > 0){
+            int n = scan.nextInt();
+            int k = scan.nextInt();
+
+            
+            boolean toSlow = false;
+            boolean bot = true;
+            boolean acc = false;
+            int arr[] = new int[n];
+            int count = 0;
+            for(int i = 0; i < n; i++){
+                arr[i] = scan.nextInt();
+                if(arr[i] >= 0){
+                    count++;
                 }
-                System.out.println(count);
+
+                if(arr[i] > k){
+                    toSlow = true;
+                }
+                if(arr[i] > 1){
+                    bot = false;
+                }
+
             }
-		} catch(Exception e) {
-		}
-	}
+
+            int num = n / 2;
+            if(count < num){
+                System.out.println("Rejected");
+            }else if(toSlow){
+                System.out.println("Too Slow");
+            }else if(bot){
+                System.out.println("Bot");
+            }
+            else{
+                System.out.println("Accepted");
+            }
+            
+            
+        }
+        
+        
+    } catch(Exception e) {
+    }
+}
     
 }
