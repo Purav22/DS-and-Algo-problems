@@ -252,7 +252,7 @@ public class quetions {
         if(head == null){
             return count;
         }
-        int ans =size(head.next, count + 1);
+        int ans = size(head.next, count + 1);
         return ans;
     }
 
@@ -376,12 +376,79 @@ public class quetions {
         return oh;
 
     }
+    //1669
+    public ListNode mergeInBetween(ListNode list1, int a, int b, ListNode list2) {
+        ListNode prev = null;
+        if(a != 0){
+            prev = getNode(list1, a - 1);
+        }else 
+            prev = null;
+        ListNode tailNew = getNode(list2, size(list2, 0) - 1);
+        ListNode forw = getNode(list1, b + 1);
+        ListNode oldPrev = getNode(list1, b);
+
+        if(prev != null) prev.next = list2;
+        else prev = list2;
+        tailNew.next = forw;
+        oldPrev.next = null;
+        return list1;
+    }
+
+    public ListNode getNode(ListNode head, int idx){
+        int i = 0;
+        ListNode temp = head;
+        while(idx != i){
+            temp = temp.next;
+            i++;
+        }
+        return temp;
+    }
 
 
+    //1721
+    public ListNode swapNodes(ListNode head, int k) {
+        if(k == 1){
+            handleK1(head, k);
+        }else{
+            ListNode prev1 = getNode(head, k - 2);
+            ListNode curr1 = prev1.next;
+            ListNode forw1 = curr1.next;
+            int len = size(head, 0);
+            int idx = len - k;
 
-    //
+            ListNode prev2 = getNode(head, idx - 1);
+            ListNode curr2 = prev2.next;
+            ListNode forw2 = curr2.next;
 
-    
+
+            prev1.next = curr2;
+            curr2.next = forw1;
+
+            prev2.next = curr1;
+            curr1.next = forw2;
+        }
+        return head;
+
+        
+        
+
+    }
+   
+    public void handleK1(ListNode head, int k) {
+        ListNode curr1 = head;
+        ListNode forw1 = curr1.next;
+
+        int len = size(head, 0);
+
+        ListNode prev = getNode(head, len - k - 1);
+        ListNode curr2 = prev.next;
+        ListNode forw2 = curr2.next;
+
+        curr2.next = forw1;
+        prev.next = curr1;
+        curr1.next = forw2;
+    }
+
     public static void main(String[] args) {
         ListNode l1 = new ListNode(2);
         ListNode head = l1;
