@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch exacttime",
+            "request": "launch",
+            "mainClass": "exacttime",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
             "name": "Launch quetions",
             "request": "launch",
             "mainClass": "LinkedList.quetions",

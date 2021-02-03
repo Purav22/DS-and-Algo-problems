@@ -407,58 +407,30 @@ public class quetions {
 
     //1721
     public ListNode swapNodes(ListNode head, int k) {
-        if(k == 1){
-            handleK1(head, k);
-        }else{
-            ListNode prev1 = getNode(head, k - 2);
-            ListNode curr1 = prev1.next;
-            ListNode forw1 = curr1.next;
-            int len = size(head, 0);
-            int idx = len - k;
-
-            ListNode prev2 = getNode(head, idx - 1);
-            ListNode curr2 = prev2.next;
-            ListNode forw2 = curr2.next;
-
-
-            prev1.next = curr2;
-            curr2.next = forw1;
-
-            prev2.next = curr1;
-            curr1.next = forw2;
+        Stack<Integer> stack=new Stack<>();
+        ListNode temp=head;
+        ListNode temp1=head;
+        int count=0;
+        while(temp != null)
+        {
+            stack.push(temp.val);
+            count++;
+            temp=temp.next;
+        }
+        int c=0;
+        while(temp1 != null)
+        {
+            if((c+1)==k || c==(count-k))
+            {
+                temp1.val=stack.pop();
+            }
+            else
+            {
+                stack.pop();
+            }
+            temp1=temp1.next;
+            c++;
         }
         return head;
-
-        
-        
-
-    }
-   
-    public void handleK1(ListNode head, int k) {
-        ListNode curr1 = head;
-        ListNode forw1 = curr1.next;
-
-        int len = size(head, 0);
-
-        ListNode prev = getNode(head, len - k - 1);
-        ListNode curr2 = prev.next;
-        ListNode forw2 = curr2.next;
-
-        curr2.next = forw1;
-        prev.next = curr1;
-        curr1.next = forw2;
-    }
-
-    public static void main(String[] args) {
-        ListNode l1 = new ListNode(2);
-        ListNode head = l1;
-        l1.next = new ListNode(1,null);
-        l1 = l1.next;
-        l1.next = new ListNode(5,null);
-        int ans[] = nextLargerNodes(head);
-        for(int num : ans)
-            System.out.println(num);
-        
-    }
-    
+    } 
 }

@@ -157,4 +157,123 @@ public class questions {
         printKDown(node.right, depth - 1, ans, block);
     }
    
+    public int diameterOfBinaryTree_01(TreeNode root) {
+        if(root == null){
+            return -1;
+        }
+        int leftDia = diameterOfBinaryTree_01(root.left);
+        int rightDia = diameterOfBinaryTree_01(root.right);
+
+        int leftHeight = height(root.left);
+        int rightHeight = height(root.right);
+
+
+        return Math.max(Math.max(leftDia, rightDia), leftHeight + rightHeight + 2);
+        
+    }
+    public int[] diameterOfBinaryTree_02(TreeNode root) {
+        if(root == null){
+            return new int[]{-1, -1};
+        }
+        int leftAns[] = diameterOfBinaryTree_02(root.left);
+        int rightAns[] = diameterOfBinaryTree_02(root.right);
+
+        int ans[] = new int[2];
+        ans[0] = Math.max(Math.max(leftAns[0], rightAns[0]), leftAns[1] + rightAns[1] + 2);
+        ans[1] = Math.max(leftAns[1] ,rightAns[1]) + 1;
+        
+
+        return ans;
+        
+    }
+    int maxDia = 0;
+    public int diameterOfBinaryTree_03(TreeNode root) {
+        if(root == null){
+            return -1;
+        }
+        int lh = diameterOfBinaryTree_03(root.left);
+        int rh = diameterOfBinaryTree_03(root.right);
+        maxDia = Math.max(maxDia, lh + rh + 2);
+        return Math.max(lh, rh) + 1;
+    }
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        
+        if(root == null){
+            return false;
+        }
+        if(root.left == null && root.right == null){
+            return(targetSum -root.val == 0);
+        }
+        
+        return hasPathSum(root.left, targetSum - root.val) || hasPathSum(root.right, targetSum - root.val);
+    }
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        if(root == null){
+            return new ArrayList<>();
+        }
+        List<List<Integer>> list = new ArrayList<>();
+        pathSum(root, sum, list, new ArrayList<>());
+        return list;
+        
+    
+    }
+    
+    public void pathSum(TreeNode root, int tar, List<List<Integer>> ans, List<Integer> list){
+        
+        if(root == null){
+            return;
+        }
+        
+       
+        if(root.left == null && root.right == null){
+            if(tar - root.val == 0){
+                List<Integer> base = new ArrayList<>(list);
+                base.add(root.val);
+                ans.add(base);
+            }
+            return;
+        }
+        
+        list.add(root.val);
+        pathSum(root.left, tar - root.val, ans, list);
+        pathSum(root.right, tar - root.val, ans, list);
+        list.remove(list.size() - 1);
+    }
+    
+
+    public int maxPathBetweenTwoLeaves(TreeNode root, int ans[]){
+
+        if(root == null)
+            return 0;
+
+        int left = maxPathBetweenTwoLeaves(root.left, ans);
+        int right = maxPathBetweenTwoLeaves(root.right, ans);
+
+        ans[0] = Math.max(ans[0], left + right + root.val);
+        return left + right + root.val;
+    }
+    int maxLeafToLeaf = -(int)1e9;
+    int maxPathSum_(TreeNode root){
+         
+        if(root == null)
+            return -(int)1e9;
+            
+        if(root.left == null && root.right == null){
+            return root.val;
+        }
+        int leftNodeToLeafMaxSum = maxPathSum_(root.left);
+        int rightNodeToLeafMaxSum = maxPathSum_(root.right);
+        
+        if(root.left != null && root.right != null)
+            maxLeafToLeaf = Math.max(maxLeafToLeaf, leftNodeToLeafMaxSum + root.val + rightNodeToLeafMaxSum);
+        
+        return Math.max(leftNodeToLeafMaxSum, rightNodeToLeafMaxSum) + root.val;
+    }
+    int maxPathSum(TreeNode root)
+    { 
+        // code here 
+        maxPathSum_(root);
+        return maxLeafToLeaf;
+       
+    } 
 }
