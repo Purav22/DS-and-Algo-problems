@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch vigener_Cipher",
+            "request": "launch",
+            "mainClass": "vigener_Cipher",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
+            "name": "Launch affine_Cipher",
+            "request": "launch",
+            "mainClass": "affine_Cipher",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
             "name": "Launch exacttime",
             "request": "launch",
             "mainClass": "exacttime",

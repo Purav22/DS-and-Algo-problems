@@ -433,4 +433,49 @@ public class quetions {
         }
         return head;
     } 
+
+    public ListNode[] splitListToParts(ListNode root, int k) {
+        
+        ListNode curr = root;
+        ListNode[] arr = new ListNode[k];
+        int len = size(root, 0);
+        ListNode dummy = new ListNode(-1);
+        ListNode temp = dummy;
+        boolean flag = true;
+        int num = len % k;
+        int s = len / k;
+        if(len < k){
+            s = 1;
+            flag = false;
+        }
+        int count = 0;
+        int i = 0;
+        while(curr != null){
+            
+            while(count != s && curr != null){
+                temp.next = new ListNode(curr.val);
+                temp = temp.next;
+                curr = curr.next;
+                count++;
+            }
+            if(i < num && flag){
+                
+                if(num != 0 && curr != null){
+                    temp.next = new ListNode(curr.val);
+                    temp = temp.next;
+                    curr = curr.next;
+            
+                }
+            }
+            if(count == s){
+                arr[i] = dummy.next;
+                i++;
+                count = 0;
+                dummy = new ListNode(-1);
+                temp = dummy;
+            }
+
+        }
+        return arr;
+    }
 }

@@ -252,28 +252,92 @@ public class questions {
         ans[0] = Math.max(ans[0], left + right + root.val);
         return left + right + root.val;
     }
-    int maxLeafToLeaf = -(int)1e9;
+    public int maxPathSum(TreeNode root) {
+        if(root == null)
+            return 0;
+        maxPathSum_(root);
+      return maxNTN;
+    }
+    int maxNTN = -(int)1e9;
     int maxPathSum_(TreeNode root){
          
         if(root == null)
-            return -(int)1e9;
+            return 0;
             
-        if(root.left == null && root.right == null){
-            return root.val;
-        }
-        int leftNodeToLeafMaxSum = maxPathSum_(root.left);
-        int rightNodeToLeafMaxSum = maxPathSum_(root.right);
+      
+        int left = maxPathSum_(root.left);
+        int right = maxPathSum_(root.right);
         
-        if(root.left != null && root.right != null)
-            maxLeafToLeaf = Math.max(maxLeafToLeaf, leftNodeToLeafMaxSum + root.val + rightNodeToLeafMaxSum);
+        int maxSumTillRoot = Math.max(left, right) + root.val;
+        maxNTN = Math.max(Math.max(maxNTN, maxSumTillRoot), Math.max(root.val, left + right+ root.val));
         
-        return Math.max(leftNodeToLeafMaxSum, rightNodeToLeafMaxSum) + root.val;
+        return Math.max(maxSumTillRoot, root.val);
     }
-    int maxPathSum(TreeNode root)
-    { 
-        // code here 
-        maxPathSum_(root);
-        return maxLeafToLeaf;
-       
-    } 
+
+    public class BST{
+        boolean isBST = true;
+        long max = -(long)1e13;
+        long min = (long)1e13;
+
+        BST(){
+
+        }
+
+        BST(boolean isBST, long max, long min){
+            this.isBST = isBST;
+            this.max = max;
+            this.min = min;
+        }
+    }
+
+    public BST isvalidBST_(TreeNode root){
+        if(root == null)
+            return new BST();
+
+        BST left = isvalidBST_(root.left);
+        BST right = isvalidBST_(root.right);
+
+        BST myAns = new BST();
+        myAns.isBST = left.isBST && right.isBST && root.val > left.max && root.val < right.min;
+        if(myAns.isBST == false){
+            return myAns;
+        }
+        myAns.max = Math.max(right.max, root.val);
+        myAns.min = Math.min(left.min, root.val);
+
+        return myAns;
+    }
+    public boolean isValidBST(TreeNode root) {
+        return isvalidBST_(root).isBST;
+    }
+    public void recoverTree(TreeNode root) {
+        recoverTree_(root);
+        if(a != null){
+            int temp = a.val;
+            a.val = b.val;
+            b.val = temp;
+        }
+        
+    }
+    TreeNode a = null, b = null, prev = null;
+    public boolean recoverTree_(TreeNode root) {
+        if(root == null)
+            return true;
+
+            if(!recoverTree_(root.left))
+                return false;
+
+            if(prev != null && prev.val > root.val){
+                b = root;
+                if(a == null) a = prev;
+                else 
+                    return false;
+            }
+
+            prev = root;
+            if(!recoverTree_(root.right))
+                return false;
+            
+            return true;
+    }
 }
