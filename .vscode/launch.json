@@ -6,6 +6,41 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch funds",
+            "request": "launch",
+            "mainClass": "funds",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
+            "name": "Launch clever_Traveler",
+            "request": "launch",
+            "mainClass": "clever_Traveler",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
+            "name": "Launch skipStation",
+            "request": "launch",
+            "mainClass": "skipStation",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
+            "name": "Launch golomb_Code",
+            "request": "launch",
+            "mainClass": "golomb_Code",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
+            "name": "Launch codeForces",
+            "request": "launch",
+            "mainClass": "codeForces",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
             "name": "Launch vigener_Cipher",
             "request": "launch",
             "mainClass": "vigener_Cipher",
