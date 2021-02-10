@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch AVLTreeQuestion",
+            "request": "launch",
+            "mainClass": "Tree.AVLTreeQuestion",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
             "name": "Launch funds",
             "request": "launch",
             "mainClass": "funds",
