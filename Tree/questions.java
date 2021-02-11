@@ -101,7 +101,7 @@ public class questions {
         List<Integer> ans = new ArrayList<>();
 
         TreeNode block = null;
-
+        
         for(int i = 0; i < list1.size(); i++){
             printKDown(list1.get(i), K - i, ans, block);
             block = list1.get(i);
