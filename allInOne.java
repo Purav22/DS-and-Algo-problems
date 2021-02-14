@@ -1,3 +1,5 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class allInOne {
@@ -191,57 +193,261 @@ public static boolean isPrime(int n){
      return true;  
     }
 }
-
-public static void main (String[] args) throws java.lang.Exception
-{
-    // your code goes here
-    Scanner scan = new Scanner(System.in);
+public void chefAndMeeting(){
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     try {
         
-        int T = scan.nextInt();
+        int T = Integer.parseInt(br.readLine());
+
         while(T-- > 0){
-            int n = scan.nextInt();
-            int k = scan.nextInt();
+            StringBuilder ans = new StringBuilder();
+            String p[] = br.readLine().split(" ");
+            //System.out.println(p);
+            String meet = "";
+            //String timing = p[1];
+           
+            //System.out.println(meetting);
+            if(p[1].equals("PM")){
+                if(p[0].charAt(0) =='1' && p[0].charAt(1) =='2'){
+                    meet =p[0];
+                    // System.out.println(meet);
+                }else{
 
-            
-            boolean toSlow = false;
-            boolean bot = true;
-            boolean acc = false;
-            int arr[] = new int[n];
-            int count = 0;
+                    int temp = (int)(p[0].charAt(0) - 48);
+                    temp *= 10;
+                    temp += (int)(p[0].charAt(1) - 48);
+                    temp += 12;
+                    int rem = temp % 10;
+                    char ch1 = (char)(rem + 48);
+                    char ch2 = (char)((int)(temp / 10) + 48);
+                    
+                     meet = ch2 + ""  + ch1 + "" + p[0].substring(2);
+                    //  System.out.println(meet);
+                }
+            }else{
+                if(p[0].charAt(0) =='1' && p[0].charAt(1) =='2'){
+                    int temp = (int)(p[0].charAt(0) - 48);
+                    temp *= 10;
+                    temp += (int)(p[0].charAt(1) - 48);
+                    temp -= 12;
+                    int rem = temp % 10;
+                    char ch1 = (char)(rem + 48);
+                    System.out.println(ch1);
+                    char ch2 = (char)((int)(temp / 10) + 48);
+                    System.out.println(ch2);
+                     meet = ch2 + ""  + ch1 + "" + p[0].substring(2);
+                      System.out.println(meet);
+                }
+                else{
+                    meet = p[0];
+                }
+            }
+            int n = Integer.parseInt(br.readLine());
+
             for(int i = 0; i < n; i++){
-                arr[i] = scan.nextInt();
-                if(arr[i] >= 0){
-                    count++;
+                String str[] = br.readLine().split(" ");
+                //String temp1 = str.charAt(0) + "" + str.charAt(1) + "" + '.' + "" + str.charAt(3) + "" + str.charAt(4) + "" + "";
+                //float start = Float.parseFloat(temp);
+                String temp1 = "";
+                //String ampm = str[1];
+                if(str[1].equals("PM")){
+                    if(str[0].charAt(0) =='1' && str[0].charAt(1) =='2'){
+                        temp1 = str[0];
+                        // System.out.println(temp1);
+                    }else{  
+    
+                        int temp = (int)(str[0].charAt(0) - 48);
+                        temp *= 10;
+                        temp += (int)(str[0].charAt(1) - 48);
+                        temp += 12;
+                        int rem = temp % 10;
+                        char ch1 = (char)(rem + 48);
+                        char ch2 = (char)((int)(temp / 10) + 48);
+                        
+                         temp1 = ch2 + ""  + ch1 + "" + str[0].substring(2);
+                        //  System.out.println(temp1);
+                    }
+                }else{
+                    if(str[0].charAt(0) =='1' && str[0].charAt(1) =='2'){
+                        int temp = (int)(str[0].charAt(0) - 48);
+                        temp *= 10;
+                        temp += (int)(str[0].charAt(1) - 48);
+                        temp -= 12;
+                        int rem = temp % 10;
+                        char ch1 = (char)(rem + 48);
+                        char ch2 = (char)((int)(temp / 10) + 48);
+                         temp1 = ch2 + ""  + ch1 + "" + str[0].substring(2);
+                        //  System.out.println(temp1);
+                    }else{
+                        temp1 = str[0];
+                    }
+                }
+                String temp2 = "";
+                //String ampm2 = str[3];
+                if(str[3].equals("PM")){
+                    if(str[2].charAt(0) =='1' && str[2].charAt(1) =='2'){
+                        temp2 = str[2];
+                        //  System.out.println(temp2);
+                    }else{
+    
+                        int temp = (int)(str[2].charAt(0) - 48);
+                        temp *= 10;
+                        temp += (int)(str[2].charAt(1) - 48);
+                        temp += 12;
+                        int rem = temp % 10;
+                        char ch1 = (char)(rem + 48);
+                        char ch2 = (char)((int)(temp / 10) + 48);
+                        
+                         temp2 = ch2 + ""  + ch1 + "" + str[2].substring(2);
+                        //  System.out.println(temp2);
+                    }
+                }else{
+                    if(str[2].charAt(0) =='1' && str[2].charAt(1) =='2'){
+                        int temp = (int)(str[2].charAt(0) - 48);
+                        temp *= 10;
+                        temp += (int)(str[2].charAt(1) - 48);
+                        temp -= 12;
+                        int rem = temp % 10;
+                        char ch1 = (char)(rem + 48);
+                        char ch2 = (char)((int)(temp / 10) + 48);
+                         temp2 = ch2 + ""  + ch1 + "" + str[2].substring(2);
+                        //  System.out.println(temp2);
+                    }
+                    else{
+                        temp2 = str[2];
+                    }
                 }
 
-                if(arr[i] > k){
-                    toSlow = true;
-                }
-                if(arr[i] > 1){
-                    bot = false;
-                }
+                // int num = 0;
+                // for(int k = 0; k < meet.length(); k++) num += (int)meet.charAt(k);
+                // int num1 = 0;
+                // for(int k = 0; k < temp1.length(); k++) num1 += (int)temp1.charAt(k);
+                // int num2 = 0;   
+                // for(int k = 0; k < temp2.length(); k++) num2 += (int)temp2.charAt(k);
+                //System.out.println(temp1);
+                String s1 = meet.replace(":",".");
+                String s2 = temp1.replace(":",".");
+                String s3 = temp2.replace(":",".");
+                //System.out.println(s1 + " " + s2 + "- " + s3);
+                float num = Float.parseFloat(s1);
+                float num1 = Float.parseFloat(s2);
+                float num2 = Float.parseFloat(s3);
+                //System.out.println(num + " " + num1 + " " + num2);
+              // System.out.println(s1 + s2 + s3);
+                if(num >= num1 && num <= num2){
+                    ans.append(1);
+                }else
+                    ans.append(0);
 
             }
-
-            int num = n / 2;
-            if(count < num){
-                System.out.println("Rejected");
-            }else if(toSlow){
-                System.out.println("Too Slow");
-            }else if(bot){
-                System.out.println("Bot");
-            }
-            else{
-                System.out.println("Accepted");
-            }
-            
-            
+            System.out.println(ans);
         }
+        
         
         
     } catch(Exception e) {
     }
+}
+static ArrayList<String> list;
+public static void main (String[] args) throws java.lang.Exception
+{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		try {
+		    String chef = "Chef";
+		    String d = "Divyam";
+		    StringBuilder st = new StringBuilder();
+            int T = Integer.parseInt(br.readLine());
+            for(int i = 0; i < T; i++){
+                String str[] = br.readLine().split(" ");
+                int num = Integer.parseInt(str[0]);
+                boolean prime[] = new boolean[num + 1];
+                for (int itr = 0; itr <= num; itr++)
+                    prime[itr] = true;
+
+                for (int p = 2; p * p <= num; p++)
+                {
+                    if (prime[p] == true)
+                    {
+                        for (int itr = p * p; itr <= num; itr += p)
+                            prime[itr] = false;
+                    }
+                }
+                int y = Integer.parseInt(str[1]);
+                int count = 0;
+                boolean ans = false;
+                for(int it = 2; it <= num; it++){
+                    if(prime[it]){
+                        count++;
+                    }
+                    if(count > y){
+                        st.append(d + "\n");
+                        ans= true;
+                        break;
+                    }
+                }
+                if(!ans) st.append(chef + "\n");
+		    
+		}
+		    System.out.println(st);
+		
+		} catch(Exception e) {
+		}
+}
+public static int teamName(String[] name , int n){
+   
+    for(int i = 0; i < n; i++){
+        for(int j = i + 1; j < n; j++){
+            String s1 = name[i];
+            String s2 = name[j];
+            if(s1.length() == s2.length()){
+            if(s1.charAt(0) != s2.charAt(0) && isDiff(s1, s2)){
+                String t1 = s2.charAt(0) + "" + s1.substring(1);
+                String t2 = s1.charAt(0) + "" + s2.substring(1);
+                if(list.contains(t1) == false && list.contains(t2) == false){
+                    list.add(s1);
+                    list.add(s2);
+                }
+            }
+        }else{
+            String t1 = s2.charAt(0) + "" + s1.substring(1);
+            String t2 = s1.charAt(0) + "" + s2.substring(1);
+            if(list.contains(t1) == false && list.contains(t2) == false){
+                list.add(s1);
+                list.add(s2);
+            }
+        }
+        }
+    }
+    return list.size() - n;
+}
+
+public static boolean isDiff(String s1, String s2) {
+
+    for(int i = 1; i < s1.length(); i++){
+        if(s1.charAt(i) != s2.charAt(i)){
+            return true;
+        }
+    }
+    return false;
+}
+
+public static int jumpFrog(int N, int[] w, int[] l, int[] idx) {
+    int count  = 0;
+
+    for(int i = 2; i <= N; i++){
+        if(idx[i] > idx[i - 1]){
+            continue;
+        }else{
+            int num = idx[i];
+            while(num <= idx[i - 1]){
+                num += l[idx[i]];
+                count++;
+            }
+            idx[i] = num;
+        }
+    }
+    return count;
 }
     
 }
