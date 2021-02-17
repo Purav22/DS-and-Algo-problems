@@ -3,8 +3,7 @@
 public class combinationsPermutations {
     public static void main(String[] args) {
         //System.out.println(nQueen01(new boolean[4][4], 0, 4, ""));
-        int n = 9;
-        System.out.println((-939 * n) % 26);
+        
         
     }
     public static int permutationCoinsInfiniteCoins(int arr[], int tar, String ans) {

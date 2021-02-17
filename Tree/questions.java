@@ -1,7 +1,9 @@
 package Tree;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+
 
 public class questions {
     public class TreeNode {
@@ -319,7 +321,7 @@ public class questions {
         }
         
     }
-    TreeNode a = null, b = null, prev = null;
+    TreeNode a = null, b = null, prev1 = null;
     public boolean recoverTree_(TreeNode root) {
         if(root == null)
             return true;
@@ -327,20 +329,20 @@ public class questions {
             if(!recoverTree_(root.left))
                 return false;
 
-            if(prev != null && prev.val > root.val){
+            if(prev1 != null && prev1.val > root.val){
                 b = root;
-                if(a == null) a = prev;
+                if(a == null) a = prev1;
                 else 
                     return false;
             }
 
-            prev = root;
+            prev1 = root;
             if(!recoverTree_(root.right))
                 return false;
             
             return true;
     }
-     // T -> avg : O(nlogn), worst : O(n^2).
+    // T -> avg : O(nlogn), worst : O(n^2).
     // psi = pre starting index, isi = in-order starting index.
     public TreeNode preInTree(int[] preorder, int psi, int pei, int[] inorder, int isi, int iei) {
         if (psi > pei)
@@ -360,8 +362,322 @@ public class questions {
         return node;
     }
 
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
-        return preInTree(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1);
+    // public TreeNode buildTree(int[] preorder, int[] inorder) {
+    //     return preInTree(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1);
+    // }
+
+    // 106
+    public TreeNode postInTree(int[] post, int psi, int pei, int[] in, int isi, int iei) {
+        if (psi > pei)
+            return null;
+
+        TreeNode node = new TreeNode(post[pei]);
+        int idx = isi;
+        while (in[idx] != post[pei])
+            idx++;
+
+        int tnel = idx - isi;
+
+        node.left = postInTree(post, psi, psi + tnel - 1, in, isi, idx - 1);
+        node.right = postInTree(post, psi + tnel, pei - 1, in, idx + 1, iei);
+
+        return node;
     }
 
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        int n = postorder.length;
+        return postInTree(postorder, 0, n - 1, inorder, 0, n - 1);
+    }
+
+    // 889
+    public TreeNode postPreTree(int[] post, int ppsi, int ppei, int[] pre, int psi, int pei) {
+        if (psi > pei)
+            return null;
+
+        TreeNode node = new TreeNode(pre[psi]);
+
+        if (psi == pei)
+            return node;
+
+        int idx = ppsi;
+        while (post[idx] != pre[psi + 1])
+            idx++;
+
+        int tnel = idx - ppsi + 1;
+        node.left = postPreTree(post, ppsi, idx, pre, psi + 1, psi + tnel);
+        node.right = postPreTree(post, idx + 1, ppei - 1, pre, psi + tnel + 1, pei);
+
+        return node;
+    }
+
+    public TreeNode constructFromPrePost(int[] pre, int[] post) {
+        int n = post.length;
+
+        return postPreTree(post, 0, n - 1, pre, 0, n - 1);
+    }
+
+    // 114, T -> O(n^2)
+    public TreeNode getTail(TreeNode root) {
+        if (root == null)
+            return null;
+        TreeNode curr = root;
+        while (curr.right != null) {
+            curr = curr.right;
+        }
+
+        return curr;
+
+    }
+
+    public void flatten(TreeNode root) {
+        if (root == null)
+            return;
+
+        flatten(root.left);
+        flatten(root.right);
+
+        TreeNode tail = getTail(root.left);
+        if (tail != null) {
+            tail.right = root.right;
+            root.right = root.left;
+            root.left = null;
+        }
+    }
+
+    // T -> O(n)
+    public TreeNode flattern_(TreeNode node) {
+        if (node == null || (node.left == null && node.right == null))
+            return node;
+
+        TreeNode leftTail = flattern_(node.left);
+        TreeNode rightTail = flattern_(node.right);
+
+        if (leftTail != null) {
+            leftTail.right = node.right;
+            node.right = node.left;
+            node.left = null;
+        }
+
+        return rightTail != null ? rightTail : leftTail;
+    }
+
+    public void flatten(TreeNode root) {
+        if (root == null)
+            return;
+        flattern_(root);
+    }
+
+    Node dummy = new Node(-1);
+    Node prev = dummy;
+
+    public void treeToDoublyList_(Node root) {
+        if (root == null)
+            return;
+
+        treeToDoublyList_(root.left);
+
+        prev.right = root;
+        root.left = prev;
+
+        prev = root;
+
+        treeToDoublyList_(root.right);
+
+    }
+
+    public Node treeToDoublyList(Node root) {
+
+        if (root == null)
+            return root;
+        treeToDoublyList_(root);
+
+        Node head = dummy.right;
+        head.left = null;
+        dummy.right = null;
+
+        prev.right = head;
+        head.left = prev;
+        return head;
+
+    }
+
+    int idx = 0;
+
+    public TreeNode createTree(int[] arr) {
+        if (idx == arr.length || arr[idx] == -1) {
+            idx++;
+            return null;
+        }
+        TreeNode node = new TreeNode(arr[idx++]);
+        node.left = createTree(arr);
+        node.right = createTree(arr);
+
+        return node;
+    }
+
+    public void serializeTree(TreeNode node, ArrayList<Integer> arr) {
+        if (node == null) {
+            arr.add(-1);
+            return;
+        }
+
+        arr.add(node.val);
+        serializeTree(node.left, arr);
+        serializeTree(node.right, arr);
+    }
+
+    public static TreeNode rightMostNode(TreeNode next, TreeNode curr) {
+        while (next.right != null && next.right != curr)
+            next = next.right;
+
+        return next;
+    }
+
+    public static void morrisInOrderTraversal(TreeNode root) {
+        TreeNode curr = root;
+        while (curr != null) {
+            TreeNode next = curr.left;
+            if (next == null) {
+                System.out.print(curr.val + " ");
+                curr = curr.right;
+            } else {
+                TreeNode rightMost = rightMostNode(next, curr);
+                if (rightMost.right == null) { // thread create
+                    rightMost.right = curr;
+                    curr = curr.left;
+                } else { // thread break
+                    rightMost.right = null;
+                    System.out.print(curr.val + " ");
+                    curr = curr.right;
+                }
+            }
+        }
+    }
+
+    public static void morrisPreOrderTraversal(TreeNode root) {
+        TreeNode curr = root;
+        while (curr != null) {
+            TreeNode next = curr.left;
+            if (next == null) {
+                System.out.print(curr.val + " ");
+                curr = curr.right;
+            } else {
+                TreeNode rightMost = rightMostNode(next, curr);
+                if (rightMost.right == null) { // thread create
+                    rightMost.right = curr;
+                    System.out.print(curr.val + " ");
+                    curr = curr.left;
+                } else { // thread break
+                    rightMost.right = null;
+                    curr = curr.right;
+                }
+            }
+        }
+    }
+
+    public static class tPair {
+        TreeNode node = null;
+        boolean selfDone = false;
+        boolean leftDone = false;
+        boolean rightDone = false;
+
+        tPair(TreeNode node, boolean selfDone, boolean leftDone, boolean rightDone) {
+            this.node = node;
+            this.selfDone = selfDone;
+            this.leftDone = leftDone;
+            this.rightDone = rightDone;
+        }
+    }
+
+    public static void IterTraversalInorder(TreeNode root) {
+        LinkedList<tPair> ll = new LinkedList<>();
+        ll.addFirst(new tPair(root, false, false, false));
+        while (ll.size() != 0) {
+            tPair pair = ll.getFirst();
+            if (!pair.leftDone) {
+                pair.leftDone = true;
+                if (pair.node.left != null)
+                    ll.addFirst(new tPair(pair.node.left, false, false, false));
+
+            } else if (!pair.selfDone) {
+                pair.selfDone = true;
+                System.out.print(pair.node.val + " ");
+            } else if (!pair.rightDone) {
+                pair.rightDone = true;
+                if (pair.node.right != null)
+                    ll.addFirst(new tPair(pair.node.right, false, false, false));
+            } else {
+                ll.removeFirst();
+            }
+        }
+    }
+
+    public static void IterTraversalPostOrder(TreeNode root) {
+        LinkedList<tPair> ll = new LinkedList<>();
+        ll.addFirst(new tPair(root, false, false, false));
+        while (ll.size() != 0) {
+            tPair pair = ll.getFirst();
+            if (!pair.leftDone) {
+                pair.leftDone = true;
+                if (pair.node.left != null)
+                    ll.addFirst(new tPair(pair.node.left, false, false, false));
+
+            } else if (!pair.rightDone) {
+                pair.rightDone = true;
+                if (pair.node.right != null)
+                    ll.addFirst(new tPair(pair.node.right, false, false, false));
+            } else if (!pair.selfDone) {
+                pair.selfDone = true;
+                System.out.print(pair.node.val + " ");
+                ll.removeFirst();
+            } 
+        }
+    }
+    public static void IterTraversalLevelOrder(TreeNode root) {
+        LinkedList<tPair> ll = new LinkedList<>();
+        ll.addFirst(new tPair(root, false, false, false));
+        while (ll.size() != 0) {
+
+            tPair pair = ll.getFirst();
+            if (!pair.selfDone) {
+                pair.selfDone = true;
+                System.out.print(pair.node.val + " ");
+                //ll.removeFirst();
+            }
+            if (!pair.leftDone) {
+                pair.leftDone = true;
+                if (pair.node.left != null)
+                    ll.addLast(new tPair(pair.node.left, false, false, false));
+
+            } if (!pair.rightDone) {
+                pair.rightDone = true;
+                if (pair.node.right != null)
+                    ll.addLast(new tPair(pair.node.right, false, false, false));
+                
+            }
+        }
+    }
+    int idxx = 0;
+    public TreeNode createTreeLevelOrder(int[] arr) {
+        LinkedList<TreeNode> ll = new LinkedList<>();
+        TreeNode root = new TreeNode(arr[idxx++]);
+        ll.addLast(root);
+
+        while(ll.size() != 0 && idxx < arr.length){
+            TreeNode node = ll.removeFirst();
+            if(arr[idxx] != -1){
+                node.left = new TreeNode(arr[idxx++]);
+                ll.addLast(node.left);
+            }else{
+                node.left = null;
+            }
+            if(arr[idxx] != -1){
+                node.right = new TreeNode(arr[idxx++]);
+                ll.addLast(node.right);
+            }else{
+                node.right = null;
+            }
+        }
+        return root;
+    }
 }
