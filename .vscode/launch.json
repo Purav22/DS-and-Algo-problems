@@ -6,6 +6,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch Graph",
+            "request": "launch",
+            "mainClass": "Graph.Graph",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
+            "name": "Launch Rail_Fence",
+            "request": "launch",
+            "mainClass": "Rail_Fence",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
+            "name": "Launch PlayFair",
+            "request": "launch",
+            "mainClass": "PlayFair",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
             "name": "Launch AVLTreeQuestion",
             "request": "launch",
             "mainClass": "Tree.AVLTreeQuestion",

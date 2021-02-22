@@ -638,7 +638,7 @@ public class questions {
         ll.addFirst(new tPair(root, false, false, false));
         while (ll.size() != 0) {
 
-            tPair pair = ll.getFirst();
+            tPair pair = ll.removeFirst();
             if (!pair.selfDone) {
                 pair.selfDone = true;
                 System.out.print(pair.node.val + " ");
@@ -676,6 +676,35 @@ public class questions {
                 ll.addLast(node.right);
             }else{
                 node.right = null;
+            }
+        }
+        return root;
+    }
+
+
+    //166 Leetcodex
+
+    public Node connect(Node root) {
+        LinkedList<TreeNode> que = new LinkedList<>();
+        que.addLast(root);
+
+        while(que.size() != 0){
+
+            int sz = que.size();
+            while(sz-- > 0){
+                TreeNode node = que.removeFirst();
+                if(sz == 1){
+                    node.next = null;
+                }
+                else{
+                    node.next = que.getFirst();
+                }
+
+                if(node.left != null){
+                    que.addLast(node.left);
+                }if(node.right != null){
+                    que.addLast(node.right);
+                }
             }
         }
         return root;
