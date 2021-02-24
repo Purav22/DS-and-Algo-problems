@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import jdk.nashorn.api.tree.Tree;
+
 
 public class questions {
     public class TreeNode {
@@ -708,5 +710,77 @@ public class questions {
             }
         }
         return root;
+    }
+
+    //968
+    // -1  I need camera
+    
+    // 0 I am covered by child
+    
+    // 1 I am camera
+    public int minCameraCover(TreeNode root) {
+        
+        if(solve(root) == -1)
+            camera++;
+        return camera;
+    }
+    int camera = 0;
+    
+    public int solve(TreeNode root){
+        if(root == null){
+            return 0;
+        }
+        
+        int left = solve(root.left);
+        int right = solve(root.right);
+        
+        if(left == -1 || right == -1){
+            camera++;
+            return 1;
+        }
+        if(left == 1 || right == 1){
+            return 0;
+        }
+        return -1;
+    }
+
+
+    //337
+    public int rob(TreeNode root) {
+        if(root == null)
+            return 0;
+        int ans[] = rob_(root);
+        return Math.max(ans[0], ans[1]);
+    }
+
+    public int[] rob_(TreeNode root){
+        if(root == null)
+            return new int[]{0,0};
+
+        int[] left = rob_(root.left);
+        int[] right = rob_(root.right);
+
+        int[] myAns = new int[2];
+        myAns[0] = left[1] + root.val + right[1];
+        myAns[1] = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
+
+        return myAns;
+    }
+
+    //230
+    public void addleftMost(LinkedList<TreeNode> st, TreeNode root){
+        while(root != null){
+            st.addLast(root);
+            root = root.left;
+        }
+    }
+    public int kthSmallest(TreeNode root, int k) {
+             LinkedList<TreeNode> st = new LinkedList<>();
+             addleftMost(st,root);
+             while(k-- > 1){
+                 TreeNode node = st.removeLast();
+                 addleftMost(st, node.right);
+             }
+             return st.removeLast().val;
     }
 }
