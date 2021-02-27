@@ -245,6 +245,30 @@ public class gTree {
 
        
     }
+    //429
+    public List<List<Integer>> levelOrder(Node root) {
+        
+        List<List<Integer>> ans = new ArrayList<>();
+        if(root == null) return ans;
+        
+        LinkedList<Node> q = new LinkedList<>();
+        q.addLast(root);
+
+        while(q.size() > 0){
+            int sz = q.size();
+            List<Integer> temp = new ArrayList<>();
+            while(sz-- > 0){
+                Node node = q.removeFirst();
+                temp.add(node.val);
+
+                for(Node child: node.childs){
+                    q.addLast(child);
+                }
+            }
+            ans.add(temp);
+        }
+        return ans;
+    }
 
     // diameter of GT
     

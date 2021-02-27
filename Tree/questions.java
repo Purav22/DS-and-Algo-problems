@@ -1,10 +1,11 @@
 package Tree;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
-import jdk.nashorn.api.tree.Tree;
 
 
 public class questions {
@@ -782,5 +783,144 @@ public class questions {
                  addleftMost(st, node.right);
              }
              return st.removeLast().val;
+    }
+
+    //437
+    int ans = 0;
+    public int pathSum_(TreeNode root, int sum) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(0,1);
+        pathSumIII(root, map, sum, 0);
+       return ans;
+    }
+
+    private void pathSumIII(TreeNode root, HashMap<Integer, Integer> map, int tar, int prefixSum) {
+
+        if(root == null) return;
+
+        prefixSum += root.val;
+
+        ans += map.getOrDefault(prefixSum - tar, 0);
+
+        map.put(prefixSum, map.getOrDefault(prefixSum,0) + 1);
+
+        pathSumIII(root.left, map, tar, prefixSum);
+        pathSumIII(root.right, map, tar, prefixSum);
+
+        map.put(prefixSum, map.get(prefixSum) - 1);
+        if(map.get(prefixSum) == 0){
+            map.remove(prefixSum);
+        }
+    } 
+
+    //653
+    public void addAllRight(LinkedList<TreeNode> rs, TreeNode root) {
+
+        while(root != null){
+            rs.addLast(root);
+            root = root.right;
+        }
+    }
+    public boolean findTarget(TreeNode root, int k) {
+        if(root == null) return false;
+
+        LinkedList<TreeNode> ls = new LinkedList<>();
+        LinkedList<TreeNode> rs = new LinkedList<>();
+
+        addleftMost(ls, root);
+        addAllRight(rs, root);
+
+        while(ls.getFirst().val < rs.getFirst().val){
+            int sum = ls.getFirst().val + rs.getFirst().val;
+
+            if(sum == k){
+                return true;
+            }
+            else if(sum < k){
+                TreeNode node = ls.removeFirst();
+                addleftMost(ls, root.right);
+            }else{
+                TreeNode node = rs.removeFirst();
+                addAllRight(rs, root.left);
+            }
+
+        }
+        return false;
+        
+    }
+
+    //1372
+
+    class Pair{
+        int left;
+        int right;
+        int max;
+
+        Pair(){
+
+        }
+
+        Pair(int left, int right, int max){
+            this.left = left;
+            this.right = right;
+            this.max = max;
+            
+        }
+    }
+
+    public Pair solveZigZag(TreeNode root){
+        if(root == null){
+            return new Pair(-1,-1,-1);
+        }
+        Pair left = solveZigZag(root.left);
+        Pair right = solveZigZag(root.right);
+
+        Pair myAns = new Pair();
+        myAns.left = left.right + 1;
+        myAns.right = right.left + 1;
+        myAns.max = Math.max(myAns.left, Math.max(myAns.right, Math.max(left.max, right.max)));
+
+        return myAns;
+    }
+    public int longestZigZag(TreeNode root) {
+         Pair ans = solveZigZag(root);
+         return Math.max(ans.left, Math.max(ans.right, ans.max));
+    }
+
+    //508
+    HashMap<Long, Integer> map = new HashMap<>();
+    public int[] findFrequentTreeSum(TreeNode root) {
+        findFrequentTreeSum_(root);
+        ArrayList<Integer> list = new ArrayList<>();
+        
+        for(long num : map.keySet()){
+            if(map.get(num) == max){
+                list.add((int)num);
+            }
+        }
+        int ans[] = new int[list.size()];
+        int idx = 0;
+        for(int num : list){
+            ans[idx++] = num;
+        }
+        return ans;
+    }
+    int max = 0;
+    
+    public long findFrequentTreeSum_(TreeNode root){
+        if(root == null){
+            return 0;
+        }
+
+
+        long l = findFrequentTreeSum_(root.left);
+        long r = findFrequentTreeSum_(root.right);
+
+        long temp = l + r + root.val;
+        map.put(temp, map.getOrDefault(temp, 0) + 1);
+        if(map.get(temp) > max){
+            max = map.get(temp);
+        }
+        return temp;
     }
 }

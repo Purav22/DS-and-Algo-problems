@@ -3,7 +3,59 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class allInOne {
-    static int dir[][] = {{0, -1}, {-1, 0}, {0, 1}, {1, 0}};
+    public static void main (String[] args) throws java.lang.Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        try {
+            int T = Integer.parseInt(br.readLine());
+
+            while(T-- > 0){
+                String input[] = br.readLine().split(" ");
+
+                int L = Integer.parseInt(input[0]);
+                int R = Integer.parseInt(input[1]);
+                
+                int num = R -L + 1;
+                
+               while(true){
+                if(isPrime(num))
+                  break;
+                  num++;
+               }
+               System.out.println(num);
+            }
+        } catch (Exception e) {
+            
+        }
+    }
+   
+    private static boolean[] giveAllPrime(int l) {
+        boolean ans[] = new boolean[l+ 1];
+        Arrays.fill(ans,true);
+        for(int i = 2 ; i * i < ans.length; i++){
+            if(ans[i]){
+                for(int p = i * 2; p <= l; p += i){
+                    ans[p] = false;
+                }
+            }
+        }
+        return ans;
+    }
+    boolean isPrime(int num){
+        boolean flag = false;
+    for (int i = 2; i <= num / 2; ++i) {
+      // condition for nonprime number
+      if (num % i == 0) {
+        flag = true;
+        break;
+      }
+    }
+        if (!flag)
+        return true;
+    return false;
+    }
+
+    static int dir[][] = { { 0, -1 }, { -1, 0 }, { 0, 1 }, { 1, 0 } };
     static String ch[] = {"L", "U", "R", "D"};
     public static String[] givePath(int n, int m, boolean visited[][], String ans, int row, int col){
         if(row == n -1 && col == m - 1){
@@ -349,51 +401,7 @@ public void chefAndMeeting(){
     }
 }
 static ArrayList<String> list;
-public static void main (String[] args) throws java.lang.Exception
-{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
-		try {
-		    String chef = "Chef";
-		    String d = "Divyam";
-		    StringBuilder st = new StringBuilder();
-            int T = Integer.parseInt(br.readLine());
-            for(int i = 0; i < T; i++){
-                String str[] = br.readLine().split(" ");
-                int num = Integer.parseInt(str[0]);
-                boolean prime[] = new boolean[num + 1];
-                for (int itr = 0; itr <= num; itr++)
-                    prime[itr] = true;
 
-                for (int p = 2; p * p <= num; p++)
-                {
-                    if (prime[p] == true)
-                    {
-                        for (int itr = p * p; itr <= num; itr += p)
-                            prime[itr] = false;
-                    }
-                }
-                int y = Integer.parseInt(str[1]);
-                int count = 0;
-                boolean ans = false;
-                for(int it = 2; it <= num; it++){
-                    if(prime[it]){
-                        count++;
-                    }
-                    if(count > y){
-                        st.append(d + "\n");
-                        ans= true;
-                        break;
-                    }
-                }
-                if(!ans) st.append(chef + "\n");
-		    
-		}
-		    System.out.println(st);
-		
-		} catch(Exception e) {
-		}
-}
 public static int teamName(String[] name , int n){
    
     for(int i = 0; i < n; i++){
