@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+
 public class Graph {
     public static class Edge {
         int v = 0;
@@ -640,6 +641,7 @@ public class Graph {
 
     //207
     public boolean canFinish(int n, int[][] arr) {
+        @SuppressWarnings("unchecked")
         ArrayList<Edge>[] graph = new ArrayList[n];
         
         for(int i = 0; i < n; i++){
@@ -731,6 +733,47 @@ public class Graph {
             level++;
         }
         return -1;
+    }
+
+    //839
+
+    public boolean isSimilar(String s1, String s2){
+        int count = 0;
+
+        for(int i = 0; i < s1.length(); i++){
+            if(s1.charAt(i) != s2.charAt(i) && ++count > 2) return false;
+
+
+        }
+        return true;
+    }
+    int[] par;
+    public int numSimilarGroups(String[] strs) {
+        
+        int count = strs.length;
+        int n = strs.length;
+
+        par = new int[n];
+        for(int i = 0; i < n; i++) par[i] = i;
+        for(int i = 0; i < n; i++){
+            for(int j = i + 1; j < n; j++){
+                if(isSimilar(strs[i], strs[j])){
+                    int p1 = findPar(i);
+                    int p2 = findPar(j);
+
+                    if(p1 != p2){
+                        par[p1] = p2;
+                        count--;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+    private int findPar(int u) {
+
+        return par[u] == u ? u : (par[u] = findPar(par[u]));
     }
 
     public static void main(String[] args) {

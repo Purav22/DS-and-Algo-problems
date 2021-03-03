@@ -1,32 +1,33 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.util.*;
 
 public class allInOne {
     public static void main (String[] args) throws java.lang.Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        try {
-            int T = Integer.parseInt(br.readLine());
-
-            while(T-- > 0){
-                String input[] = br.readLine().split(" ");
-
-                int L = Integer.parseInt(input[0]);
-                int R = Integer.parseInt(input[1]);
-                
-                int num = R -L + 1;
-                
-               while(true){
-                if(isPrime(num))
-                  break;
-                  num++;
-               }
-               System.out.println(num);
-            }
-        } catch (Exception e) {
-            
-        }
+		try {
+		    int T = Integer.parseInt(br.readLine());
+            StringBuilder b = new StringBuilder();
+		    while(T-- > 0){
+                //System.out.println(T);
+		        int N = Integer.parseInt(br.readLine());
+		        String s1[] = br.readLine().split(" "); 
+		        int arr[] = new int[N];
+		       for(int i = 0; i < N; i++){
+		           arr[i] = Integer.parseInt(s1[i]);
+		           if(arr[i] < 0) arr[i] = arr[i] * -1;
+		       }
+		       Arrays.sort(arr);
+		       BigInteger ans = new BigInteger("0");
+               ans = ans.add(BigInteger.valueOf(arr[N-1]));
+               ans = ans.multiply(BigInteger.valueOf(arr[N-2]));
+               ans.add(BigInteger.valueOf(arr[N - 1] - arr[N - 2]));
+               b.append(ans + "\n");
+		    }
+            System.out.println(b);
+		} catch(Exception e) {
+		}
     }
    
     private static boolean[] giveAllPrime(int l) {
@@ -41,19 +42,7 @@ public class allInOne {
         }
         return ans;
     }
-    boolean isPrime(int num){
-        boolean flag = false;
-    for (int i = 2; i <= num / 2; ++i) {
-      // condition for nonprime number
-      if (num % i == 0) {
-        flag = true;
-        break;
-      }
-    }
-        if (!flag)
-        return true;
-    return false;
-    }
+   
 
     static int dir[][] = { { 0, -1 }, { -1, 0 }, { 0, 1 }, { 1, 0 } };
     static String ch[] = {"L", "U", "R", "D"};
