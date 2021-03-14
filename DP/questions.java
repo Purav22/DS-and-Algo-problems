@@ -195,15 +195,166 @@ public class questions {
         return list.getFirst();
 
     }
+
+    public static int climbStairs_memo(int n, int[] dp){
+        if(n <= 1){ 
+            return dp[n] = 1;
+        
+        }
+        if(dp[n] != -1) return dp[n];
+        int ans  = 0;
+        ans =  climbStairs_memo(n - 1, dp) + climbStairs_memo(n - 2, dp);
+
+
+
+        return dp[n] = ans;
+    }
+
+    public static int climbStairs_DP(int N, int[] dp){
+        
+        for(int n = 0; n <= N; n++){
+
+            if(n <= 1){ 
+                dp[n] = 1;
+                continue;
+            }
+            
+           dp[n] = dp[n - 1] + dp[n - 2];
+        }
+        return dp[N];
+    }
+    public static int minCostClimbingStairs_memo(int[] cost, int ei, int si, int dp[]) {
+        if(si > ei) return 0;
+         
+        if(si == ei){
+            return dp[si] = cost[si];
+        }
+         
+        if(dp[si] != 0) return dp[si];
+
+         
+        return dp[si] = Math.min(minCostClimbingStairs_memo(cost,ei, si + 1, dp), minCostClimbingStairs_memo(cost,ei, si + 2, dp)) + cost[si];
+        
+    }
+
+    public static int minCostClimbingStairs_DP(int[] cost, int ei, int si, int dp[]) {
+
+        for(si = ei; si >= 0; si--){
+            
+            
+            if(si == ei){
+                dp[si] = cost[si];
+                continue;
+            }
+            
+            dp[si] = Math.min(dp[si + 1] , dp[si + 2]) + cost[si];
+        }
+        return Math.min(dp[0], dp[1]);
+    }
+
+    int mod = (int)1e9 + 7;
+    public  long countFriendsPairings(int n) 
+    { 
+        long dp[] = new long[n + 1];
+        return countFriendsPairings_memo(n, dp);
+
+    }
+
+    public  long countFriendsPairings_memo(int n, long[] dp){
+        if(n <= 1) {
+            return dp[n] = 1;
+        }
+        if(dp[n] != 0) return dp[n];
+        long single = countFriendsPairings_memo(n - 1, dp);
+        long pair = countFriendsPairings_memo(n - 2, dp) * (n - 1);
+
+        return dp[n] = (single % mod + pair % mod) % mod;
+    }
+    public  long countFriendsPairings_DP(int N, long[] dp){
+       for(int n = 0; n <= N; n++){
+
+           if(n <= 1) {
+                dp[n] = 1;
+                continue;
+           }
+           
+           long single = dp[n - 1]; //countFriendsPairings_memo(n - 1, dp);
+           long pair = dp[n - 2] * (n - 1); //countFriendsPairings_memo(n - 2, dp) * (n - 1);
+   
+            dp[n] = (single % mod + pair % mod) % mod;
+       }
+       return dp[N];
+    }
+    static int maxGold(int n, int m, int M[][])
+    {
+        // code here
+        int[][] dp = new int[n][m];
+        for(int i = 0; i < n; i++)
+        Arrays.fill(dp[i], -1);
+        int[][] dir = {{-1,1}, {0,1}, {1,1}};
+        
+        return maxGold_DP(0, 0, n, m, M, dp, dir);
+       
+    }
+
+    public static int maxGold_memo(int r, int c, int n, int m, int M[][], int dp[][], int[][] dir){
+        if(c == m - 1){
+            return dp[r][c] = M[r][c];
+        }
+        
+        if(dp[r][c] != -1) return dp[r][c];
+        int maxGold = 0;
+        
+        for(int d = 0; d < dir.length; d++){
+            int x = r + dir[d][0];
+            int y = c + dir[d][1];
+
+            if(x >= 0 && x < n){
+                maxGold = Math.max(maxGold, maxGold_memo(x, y, n, m, M, dp, dir));
+            }
+        }
+        return dp[r][c] = maxGold  + M[r][c];
+    }
+    public static int maxGold_DP(int R, int C, int n, int m, int M[][], int dp[][], int[][] dir){
+        
+        for(int c = m -1; c >= 0; c--){
+            for(int r = n -1; r >= 0; r--){
+                if(c == m - 1){
+                    dp[r][c] = M[r][c];
+                    continue;
+                }
+                
+                
+                int maxGold = 0;
+                
+                for(int d = 0; d < dir.length; d++){
+                    int x = r + dir[d][0];
+                    int y = c + dir[d][1];
+
+                    if(x >= 0 && x < n){
+                        maxGold = Math.max(maxGold, dp[x][y]);
+                    }
+                }
+                dp[r][c] = maxGold  + M[r][c];
+            }
+        }
+        int maxGold = 0;
+        for(int i = 0; i < n; i++){
+            maxGold = Math.max(maxGold, dp[i][0]);
+        }
+
+        return maxGold;
+        
+    }
    
     public static void main(String[] args) {
         int n = 10;
         int dp[] = new int[n + 1];
-        Arrays.fill(dp, -1);
 //        System.out.println(mazePath_dp(dp,0,0,n - 1 ,n - 1));
-        System.out.println(dice_memo(dp, 0, 10));
-        print1D(dp);
-        System.out.println(dice_DP(dp,0,10));
-        print1D(dp);
+        // System.out.println(dice_memo(dp, 0, 10));
+        // print1D(dp);
+        // System.out.println(dice_DP(dp,0,10));
+        // print1D(dp);
+        System.out.println(climbStairs_DP(n,  dp));
     }
 }
