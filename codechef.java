@@ -1,24 +1,56 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Scanner;
 
+
 public class codechef {
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
+        // Scanner scan = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         try {
             
-            int T = scan.nextInt();
+            int T = Integer.parseInt(br.readLine());
             while(T-- > 0){
-                int N = scan.nextInt();
+                String s[] = br.readLine().split(" ");
+                int n = Integer.parseInt(s[0]);
+                int m = Integer.parseInt(s[1]);
+                int k = Integer.parseInt(s[2]);
 
-                int arr[] = new int[N];
-                for(int i = 0; i < N; i++){
-                    arr[i] = scan.nextInt();
+                long num = 0;
+
+                for(int i = 1; i <= n; i++){
+                    int freq = Math.min(i, m);
+                    if(freq % 2 == 1){
+                        num = num ^ k + i + 1;
+                    }
                 }
-                System.out.println(spaceArray(arr));
+
+                for(int j = 2; j <= m; j++){
+                    int freq = Math.min(n, m - j + 1);
+                    if(freq % 2 == 1){
+                        num = num ^ k + j + n;
+                    }
+                }
+
+                
+                System.out.println(num);
             }
         } catch (Exception e) {
 
         }
+    }
+    private static int giveSqr(int i) {int flag = 0;
+        // int num = 1;
+        // while(flag == 0){
+        //     System.out.println(giveSqr(num++));
+        //     System.out.flush();
+
+        //     flag = scan.nextInt();
+            
+        // }
+        // System.out.flush();
+        return i * i;
     }
     public static void clgLife4(String[] str){
         int n = Integer.parseInt(str[0]);
