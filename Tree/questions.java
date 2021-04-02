@@ -1,6 +1,7 @@
 package Tree;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -923,4 +924,193 @@ public class questions {
         }
         return temp;
     }
+
+    //1104
+    List<Integer> list;
+    public List<Integer> pathInZigZagTree(int label) {
+        list = new ArrayList<>();
+        ZigZagTree(label);
+        Collections.reverse(list);
+        return list;
+               
+    }
+    
+    public void ZigZagTree(int label) {
+         if(label==1){
+             list.add(label);
+             return;
+         }
+         list.add(label);
+         int level = (int)(Math.log(label)/Math.log(2))+1;
+         System.out.print("level "+ level+ " ");
+         int previousLevel = (1<<(level-1));
+         System.out.print("previousLevel "+previousLevel +" ");
+         int difference = label-previousLevel;
+         System.out.print("difference "+ difference);
+         System.out.println();
+         ZigZagTree(previousLevel-1-difference/2);
+     }
+
+
+    //1110
+
+    public List<TreeNode> delNodes(TreeNode root, int[] arr) {
+        List<TreeNode> ans = new ArrayList<>();
+        if(arr.length == 0){
+            ans.add(root);
+            return ans;
+        }
+        boolean vis[] = new boolean[1000 + 1];
+        filltheArray(vis, arr);
+        solve(root, vis, ans);
+        for(int num : arr){
+            if(num == root.val){
+                return ans;
+            }
+        }
+        ans.add(0,root);
+        return ans;
+        
+    }
+    public void filltheArray(boolean[] vis, int[] arr){
+        
+        for(int i = 0; i < arr.length; i++){
+            vis[arr[i]] = true;    
+        }
+        
+    }
+    
+    public void solve(TreeNode root, boolean[] vis, List<TreeNode> ans){
+        if(root == null) return;
+        if(vis[root.val]){
+            if(root.left != null){
+                if(!vis[root.left.val]){
+                    ans.add(root.left);
+                    solve(root.left, vis,ans);
+                }else{
+                    solve(root.left, vis, ans);
+                    root.left = null;
+                }
+            }
+            if(root.right != null){
+                if(!vis[root.right.val]){
+                    ans.add(root.right);
+                    solve(root.right, vis,ans);
+                }else{
+                    solve(root.right, vis, ans);
+                    root.right = null;
+                }
+                
+            }
+        
+        }else{
+            solve(root.left, vis, ans);
+            if(root.left != null){
+                if(vis[root.left.val]) root.left = null;
+            }
+            solve(root.right, vis, ans);
+            if(root.right != null){
+                if(vis[root.right.val]) root.right = null;
+            }
+        }
+        
+    }
+
+    //1443
+    public int minTime(int n, int[][] edges, List<Boolean> hasApple) {
+        HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
+        
+        boolean[] vis = new boolean[n];
+        for(int i = 0; i < n; i++) map.put(i, new ArrayList<>());
+        
+        
+        for(int[] e : edges){
+            map.get(e[0]).add(e[1]);    
+            map.get(e[1]).add(e[0]);
+        }
+        
+        for(int i = 0; i < n; i++){
+            if(!vis[i]){
+                solve_miTime(map, hasApple, n, i, vis);
+            }
+        }
+        return ans;
+        
+    }
+    int ans = 0;
+    public boolean solve_miTime(HashMap<Integer, ArrayList<Integer>> map, List<Boolean> hasApple, int n, int idx, boolean vis[]){
+        
+        ArrayList<Integer> list = map.get(idx);
+        vis[idx] = true;
+        boolean call = false;
+        for(Integer num : list){
+            if(!vis[num]){
+                if(solve_miTime(map, hasApple, n, num, vis)){
+                        ans += 2;
+                        call = true;
+                    
+                }
+            }
+        }
+        if(hasApple.get(idx)){
+            
+                call = true;
+            
+        }
+        return call;
+    }
+
+    //1315
+
+    class pair{
+        TreeNode node;
+        TreeNode par;
+        TreeNode gpar;
+        
+        pair(TreeNode node, TreeNode par, TreeNode gpar){
+            this.node = node;
+            this.par = par;
+            this.gpar = gpar;
+        }
+        
+    }
+    int ans = 0;
+    public int sumEvenGrandparent(TreeNode root) {
+        sumEvenGrandparent_(root, new pair(null, null, null));
+        return ans;
+    }
+    
+    public void sumEvenGrandparent_(TreeNode root, pair par){
+        if(root == null) return;
+        pair p = new pair(root, par.node, par.par);
+        
+        if(p.gpar != null && p.gpar.val % 2 == 0) ans += p.node.val;
+        
+        sumEvenGrandparent_(root.left, p);
+        sumEvenGrandparent_(root.right, p);
+        return;
+    }
+
+    //1448
+
+    public int goodNodes(TreeNode root) {
+        return goodNodes(root, root.val);
+    }
+    
+    public int goodNodes(TreeNode root, int max){
+        
+        if(root == null) return 0;
+        int count = 0;
+        if(root.val >= max){
+            count++;
+            max = root.val;
+        }
+        
+        count += goodNodes(root.left, max);
+        count += goodNodes(root.right, max);
+        
+        return count;
+        
+    }
+    
 }

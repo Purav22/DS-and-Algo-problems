@@ -428,4 +428,29 @@ public class que_1001 {
         return ans;
 
     }
+    // https://practice.geeksforgeeks.org/problems/diagonal-traversal-of-binary-tree/1
+    public ArrayList<Integer> diagonal(Node root)
+      {
+          if(root == null) return new ArrayList<>();
+          
+          
+            ArrayList<Integer> ans = new ArrayList<>();
+           LinkedList<Node> l1 = new LinkedList<>();
+           LinkedList<Node> l2 = new LinkedList<>();
+           
+           l1.addLast(root);
+           
+           while(l1.size() > 0){
+               Node rmv = l1.removeFirst();
+               ans.add(rmv.data);
+               
+               if(rmv.right != null) l1.addLast(rmv.right);
+               
+               if(rmv.left != null) l2. addLast(rmv.left);
+               
+               if(l2.size() > 0)
+                    if(l1.size() == 0) l1.addLast(l2.removeFirst());
+           }
+           return ans;
+      }
 }

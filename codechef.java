@@ -4,54 +4,98 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 
+
 public class codechef {
     public static void main(String[] args) {
-        // Scanner scan = new Scanner(System.in);
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        Scanner scan = new Scanner(System.in);
+        // BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         try {
-            
-            int T = Integer.parseInt(br.readLine());
+            int T = scan.nextInt();
             while(T-- > 0){
-                String s[] = br.readLine().split(" ");
-                int n = Integer.parseInt(s[0]);
-                int m = Integer.parseInt(s[1]);
-                int k = Integer.parseInt(s[2]);
+                int n = scan.nextInt();
+                int m = scan.nextInt();
 
-                long num = 0;
+                int[] foot = new int[n];
+                int[] cric = new int[m];
 
-                for(int i = 1; i <= n; i++){
-                    int freq = Math.min(i, m);
-                    if(freq % 2 == 1){
-                        num = num ^ k + i + 1;
+                for(int i = 0; i < n; i++) foot[i] = scan.nextInt();
+                for(int i = 0; i < m; i++) cric[i] = scan.nextInt();
+
+                int count = 0;
+                if(foot[0] > cric[0]){
+                    count++;
+                    int i = 1;
+                    int j = 0;
+                    
+                    char ch = 'j';
+                    while(true){
+                        if(foot[i] > cric[j]){
+                            if(ch == 'i') count++;
+                            ch = 'j';
+                            j++;
+                            if(j == m){
+                                if( i < n) count++;
+                                break;
+                            }
+                        }else{
+                            if(ch == 'j') count++;
+                            ch = 'i';
+                            i++;
+                            if(i == n){
+                                if(j < m) count++;
+                                break;
+                            }
+                        }
+                        
+                        
                     }
-                }
-
-                for(int j = 2; j <= m; j++){
-                    int freq = Math.min(n, m - j + 1);
-                    if(freq % 2 == 1){
-                        num = num ^ k + j + n;
+                }else{
+                    int i = 1;
+                    int j = 0;
+                    char ch = 'i';
+                    while(true){
+                        if(foot[i] > cric[j]){
+                            if(ch == 'i') count++;
+                            ch = 'j';
+                            j++;
+                            ch = 'j';
+                            if(j == m){
+                                if( i < n) count++;
+                                break;
+                            }
+                        }else{
+                            if(ch == 'j') count++;
+                            ch = 'i';
+                            i++;
+                            if(i == n){
+                                if(j < m) count++;
+                                break;
+                            }
+                        }
+                        
+                        
                     }
-                }
 
-                
-                System.out.println(num);
+                }
+                    System.out.println(count);
             }
         } catch (Exception e) {
 
         }
     }
-    private static int giveSqr(int i) {int flag = 0;
-        // int num = 1;
-        // while(flag == 0){
-        //     System.out.println(giveSqr(num++));
-        //     System.out.flush();
+    // private static int giveSqr(int i) {
+    //     int flag = 0;
+    //     // int num = 1;
+    //     // while(flag == 0){
+    //     //     System.out.println(giveSqr(num++));
+    //     //     System.out.flush();
 
-        //     flag = scan.nextInt();
+    //     //     flag = scan.nextInt();
             
-        // }
-        // System.out.flush();
-        return i * i;
-    }
+    //     // }
+    //     // System.out.flush();
+    //     return i * i;
+    // }
     public static void clgLife4(String[] str){
         int n = Integer.parseInt(str[0]);
         int e = Integer.parseInt(str[1]);

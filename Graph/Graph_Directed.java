@@ -1,6 +1,7 @@
 package Graph;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 
@@ -93,7 +94,6 @@ public class Graph_Directed {
             if (indegree[i] == 0)
                 que.addLast(i);
     
-        int level = 0;
         while (que.size() != 0)
         {
             int size = que.size();
@@ -110,10 +110,91 @@ public class Graph_Directed {
                 }
             }
     
-            level++;
         }
     
         for (int ele : ans)
             System.out.println(ele + " ");
     }
+    
+    public boolean isCyclePresent_DFSTopo(int src, int[] vis, ArrayList<Integer> ans){
+        vis[src] = 0;
+        boolean res = false;
+        for (Edge e : graph[src]){
+            if (vis[e.v] == -1){ // unvisited
+                res = res || isCyclePresent_DFSTopo(e.v, vis, ans);
+            }
+            else if (vis[e.v] == 0){
+                return true; // there is cycle.
+            }
+        }
+    
+        vis[src] = 1;
+        ans.add(src);
+        return res;
+    }
+    
+    public ArrayList<Integer> isCyclePresent_DFS(){
+        int[] vis =  new int[N];
+        Arrays.fill(vis, -1);
+        ArrayList<Integer> ans = new ArrayList<>();
+    
+        boolean res = false;
+        for (int i = 0; i < N; i++){
+            if (vis[i] == -1){
+                res = res || isCyclePresent_DFSTopo(i, vis, ans);
+            }
+        }
+    
+        if (res)
+            ans.clear();
+        return ans;
+    }
+    
+    void dfs_SCC(ArrayList<Edge>[] ngraph, int src, boolean[] vis,  ArrayList<Integer> ans)
+    {
+        vis[src] = true;
+        for (Edge e : ngraph[src])
+        {
+            if (!vis[e.v])
+                dfs_SCC(ngraph, e.v, vis, ans);
+        }
+    
+        ans.add(src);
+    }
+    
+    //Kosaraju
+    public void kosaraju(){
+        boolean[] vis = new boolean[N];
+        ArrayList<Integer> ans = new ArrayList<>();
+        for (int i = 0; i < N; i++){
+            if (!vis[i])
+                dfs_topo(i, vis, ans);
+        }
+    
+        // Graph inverse.
+        @SuppressWarnings("unchecked")
+        ArrayList<Edge>[] ngraph = new ArrayList[N];
+
+        for (int i = 0; i < N; i++){
+            for (Edge e : graph[i]){
+                ngraph[e.v].add(new Edge(i, 1));
+            }
+        }
+    
+        vis = new boolean[N];
+        for (int i = ans.size() - 1; i >= 0; i--){
+            int ele = ans.get(i);
+            if (!vis[ele])
+            {
+                ArrayList<Integer> scc = new ArrayList<>();
+                dfs_SCC(ngraph, ele, vis, scc);
+    
+                for (int e : scc)
+                    System.out.println(e + " ");
+
+                System.out.println();
+            }
+        }
+    }
+    
 }
