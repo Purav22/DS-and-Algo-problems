@@ -503,5 +503,21 @@ public static int jumpFrog(int N, int[] w, int[] l, int[] idx) {
     }
     return count;
 }
+
+public static ArrayList<Integer> givDiv(int n){
+    ArrayList<Integer> arr = new ArrayList<>();
+    for(int i = 1; i * i < n; i++)
+    {
+        if (n % i == 0)
+            arr.add(i);
+    }
+    for(int i = (int)Math.sqrt(n);
+            i >= 1; i--)
+    {
+        if (n % i == 0)
+            arr.add(n / i);
+    }
+    return arr;
+}
     
 }

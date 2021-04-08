@@ -1,8 +1,10 @@
 package DP;
 
 import java.rmi.dgc.Lease;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 public class questions {
     public static void print1D(int arr[]){
@@ -525,7 +527,7 @@ public class questions {
 
         return (int) dp[IDX];
     }
-    public int numDecodings2_twoPointer(String s){
+    public long numDecodings2_twoPointer(String s){
         long a = 1, b = 0;
         for (int idx = s.length() - 1; idx >= 0; idx--) {
 
@@ -563,16 +565,274 @@ public class questions {
 
         return a;
     }
+    //120
 
-   
-    public static void main(String[] args) {
-        int n = 10;
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int li = triangle.size();
+        int[][] dp = new int[li + 1][li + 1];
+
+        for(int[] d : dp) Arrays.fill(d, -1);
+
+        return minimumTotal_memo(triangle, 0, 0, dp);
+    }
+    public int minimumTotal_memo(List<List<Integer>> triangle, int idx, int li, int[][] dp) {
+        if(li == triangle.size()) {
+            return dp[idx][li] = 0;
+        }
+        if(dp[idx][li] != -1) return dp[idx][li];
+
+        int lans = minimumTotal_memo(triangle, idx, li + 1, dp);
+        int rans = minimumTotal_memo(triangle, idx + 1, li + 1, dp);
+
+        return dp[idx][li] = Math.min(lans, rans) + triangle.get(li).get(idx);   
+        
+    }
+
+   //97
+    public boolean isInterleave(String s1, String s2, String s3) {
+        int n = s1.length();
+        int m = s2.length();
+        if(n + m != s3.length()) return false;
+        int[][] dp = new int[n + 1][m + 1];
+        for(int[] d : dp) Arrays.fill(d, -1);
+        return isInterleave_memo(s1, s2, s3, 0, 0,0, "", dp);
+    }
+
+// 1 == true, 0 == false -1 == default
+    public boolean isInterleave_memo(String s1, String s2, String s3, int i, int j, int k, String res, int[][] dp) {
+    
+        if(i == s1.length() && j == s2.length() && res.equals(s3)){
+            //System.out.println(res);
+            dp[i][j] = 1;
+            return true;
+        }if(i == s1.length()){
+            if(s2.substring(j).equals(s3.substring(k))){
+                dp[i][j] = 1;
+                return true;
+            }
+            return false;
+        }
+        if(j == s2.length()){
+            if(s1.substring(i).equals(s3.substring(k))){
+                dp[i][j] = 1;
+                return true;
+            }
+            return false;
+        }
+    
+        if(dp[i][j] != -1) {
+            return dp[i][j] == 1;
+        }
+        boolean ans = false;
+        if(s3.charAt(k) == s1.charAt(i))
+            ans = ans || isInterleave_memo(s1,s2,s3,i + 1, j, k + 1, res + s1.charAt(i), dp);
+        if(s3.charAt(k) == s2.charAt(j))
+            ans = ans || isInterleave_memo(s1,s2,s3,i, j + 1, k + 1, res + s2.charAt(j), dp);
+        
+
+        dp[i][j] = ans ? 1: 0;
+        return ans;
+    }
+    public boolean isInterleave_DP(String s1, String s2, String s3, int i, int j, int k, String res, int[][] dp) {
+    
+        if(i == s1.length() && j == s2.length() && res.equals(s3)){
+            //System.out.println(res);
+            dp[i][j] = 1;
+            return true;
+        }if(i == s1.length()){
+            if(s2.substring(j).equals(s3.substring(k))){
+                dp[i][j] = 1;
+                return true;
+            }
+            return false;
+        }
+        if(j == s2.length()){
+            if(s1.substring(i).equals(s3.substring(k))){
+                dp[i][j] = 1;
+                return true;
+            }
+            return false;
+        }
+    
+        if(dp[i][j] != -1) {
+            return dp[i][j] == 1;
+        }
+        boolean ans = false;
+        if(s3.charAt(k) == s1.charAt(i))
+            ans = ans || isInterleave_memo(s1,s2,s3,i + 1, j, k + 1, res + s1.charAt(i), dp);
+        if(s3.charAt(k) == s2.charAt(j))
+            ans = ans || isInterleave_memo(s1,s2,s3,i, j + 1, k + 1, res + s2.charAt(j), dp);
+        
+
+        dp[i][j] = ans ? 1: 0;
+        return ans;
+    }
+
+
+    //139
+    public static boolean wordBreak(String s, List<String> wordDict) {
+        int n = s.length();
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, -1);
+        
+        boolean ans = wordBreak_memo(s, wordDict, 0, n, dp);
+        print1D(dp);
+        return ans;
+    }
+
+    public static boolean wordBreak_memo(String s, List<String> wordDict, int si, int n, int[] dp) {
+        if(si == n) {
+            dp[si] = 1;
+            System.out.println(si);
+            return true;
+        }
+
+        if(dp[si] != -1) return dp[si] == 1;
+
+        boolean res = false;
+        for(int cut = si; cut < n; cut++){
+            if(wordDict.contains(s.substring(si, cut + 1))){
+                //System.out.println(s.substring(si,cut + 1));
+                res = res || wordBreak_memo(s, wordDict, cut + 1, n, dp);
+            }
+           // System.out.println(1);
+        }
+
+        dp[si]= res ? 1 : 0;
+        System.out.println(si);
+        return res;
+
+    }
+    public static boolean wordBreak_DP(String s, List<String> wordDict, int SI, int n, boolean[] dp) {
+        for(int si = n; si >= 0 ; si--){
+            if(si == n) {
+                dp[si] = true;
+                continue;
+            }
+    
+           
+            for(int cut = si; cut < n; cut++){
+                if(wordDict.contains(s.substring(si, cut + 1))){
+                    //System.out.println(s.substring(si,cut + 1));
+                    dp[si] = dp[si] || dp[cut + 1]; //wordBreak_memo(s, wordDict, cut + 1, n, dp);
+                }
+              
+            }
+    
+        }
+        return dp[SI];
+
+    }
+
+    //140
+    public List<String> wordBreak_(String s, List<String> wordDict) {
+        int n = s.length();
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, -1);
+        List<String> list = new ArrayList<>();
+        wordBreak_memo(s, wordDict, 0, n, dp, list, "");
+        return list;
+     }
+    
+    public static boolean wordBreak_memo(String s, List<String> wordDict, int si, int n, int[] dp, List<String> list, String ans) {
+        if(si == n) {
+            dp[si] = 1;
+            list.add(ans.substring(0, ans.length() - 1));
+            return true;
+        }
+
+        //if(dp[si] != -1) return dp[si] == 1;
+
+        boolean res = false;
+        for(int cut = si; cut < n; cut++){
+            if(wordDict.contains(s.substring(si, cut + 1))){
+                //System.out.println(s.substring(si,cut + 1));
+                wordBreak_memo(s, wordDict, cut + 1, n, dp, list, ans + s.substring(si, cut + 1) + " ");
+            }
+           // System.out.println(1);
+        }
+
+        dp[si]= res ? 1 : 0;
+        
+        return res;
+
+    }
+
+    //174
+    public int calculateMinimumHP(int[][] dungeon) {
+        int n = dungeon.length;
+        int m = dungeon[0].length;
+        int[][] dp = new int[n + 1][m + 1];
+        for(int[] d : dp) Arrays.fill(d, -(int)1e9);
+        return -calculateMinimumHP_memo(dungeon, 0, 0, n, m, dp) + 1;
+        
+    }
+    public int calculateMinimumHP_memo(int[][] arr, int i, int j,int n, int m, int[][] dp) {
+        if(i == n || j == m){
+            
+            return dp[i][j] = -(int)1e9;
+        }
+        if(i == n - 1 && j == m - 1)
+                return dp[i][j] = arr[i][j] >= 0 ? 0 : arr[i][j];
+
+        if(dp[i][j] != -(int)1e9) return dp[i][j];
+        int lans = calculateMinimumHP_memo(arr, i + 1, j, n, m, dp);
+        int rans = calculateMinimumHP_memo(arr, i, j + 1, n, m, dp);
+
+        if(lans >= 0){
+            dp[i][j] = arr[i][j] >= 0 ? 0 : arr[i][j];
+            //System.out.println("1 " + i + " " + j + " " + dp[i][j]);
+            return dp[i][j];
+        }
+        if(rans >= 0){
+            dp[i][j] = arr[i][j] >= 0 ? 0 : arr[i][j];
+            //System.out.println("2 " + i + " " + j + " " + dp[i][j]);
+            return dp[i][j];
+        }
+
+        dp[i][j] = Math.max(lans, rans);
+        dp[i][j] = arr[i][j] + dp[i][j] >= 0 ? 0 : dp[i][j] + arr[i][j];
+        //System.out.println("3 " + i + " " + j + " " + dp[i][j]);
+        return dp[i][j];
+    }
+
+    
+
+    //279
+    public int numSquares(int n) {
         int dp[] = new int[n + 1];
-//        System.out.println(mazePath_dp(dp,0,0,n - 1 ,n - 1));
-        // System.out.println(dice_memo(dp, 0, 10));
-        // print1D(dp);
-        // System.out.println(dice_DP(dp,0,10));
-        // print1D(dp);
-        System.out.println(climbStairs_DP(n,  dp));
+        Arrays.fill(dp, -1);
+        return numSquares(n, dp);
+    }
+    public int numSquares(int n, int dp[]) {
+        if(n == 0)
+        return dp[n] = 0;
+
+        if(dp[n] != -1) return dp[n];
+
+        int count = (int)1e9;
+        for(int i = 1 ; i * i <= n; i++){
+            count = Math.min(count, numSquares(n - i * i, dp));
+        }
+        return dp[n] = count + 1;
+    }
+
+    public static void main(String[] args) {
+//         int n = 10;
+//         int dp[] = new int[n + 1];
+// //        System.out.println(mazePath_dp(dp,0,0,n - 1 ,n - 1));
+//         // System.out.println(dice_memo(dp, 0, 10));
+//         // print1D(dp);
+//         // System.out.println(dice_DP(dp,0,10));
+//         // print1D(dp);
+//         System.out.println(climbStairs_DP(n,  dp));
+
+            List<String> list = new ArrayList<>();
+            list.add("cat");
+            list.add("cats");
+            list.add("and");
+            list.add("sand");
+            list.add("dog");
+            wordBreak("catsanddog", list);
     }
 }

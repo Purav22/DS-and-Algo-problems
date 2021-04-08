@@ -1,92 +1,201 @@
-#include <cstring>
-#include<iostream>
-#include <cstdlib>
+#include <iostream>
+#include <string.h>
+#include <math.h>
 
 using namespace std;
 
-struct rotation {
-    int index;
-    char* suffix;
-};
-
-int cmpfunc(const void* x, const void* y)
+int count, a, i, j, k = 0, l, flag = 0, m = 0, freq[25], sum = 0, total, temp;
+int q, sum1 = 0, sum2 = 0, min, diff[25] = {0};
+double start[10];
+double r1[10], r2[10];
+double low = 0, high = 1;
+double info_cont[25], p[25];
+char ch[26], temp1, range[25][25];
+string str;
+int main()
 {
-    struct rotation* rx = (struct rotation*)x;
-    struct rotation* ry = (struct rotation*)y;
-    return strcmp(rx->suffix, ry->suffix);
+    void cha();
+    void sortf();
+    void prob_range();
+    void low_high();
+    void decoding();
+
+    cout << "\nEnter the string: ";
+    getline(cin, str);
+    cha();
+    sortf();
+    prob_range();
+    low_high();
+    decoding();
 }
-
-int* computeSuffixArray(char* input_text, int len_text)
+void cha()
 {
-    struct rotation suff[len_text];
-    for (int i = 0; i < len_text; i++) {
-        suff[i].index = i;
-        suff[i].suffix = (input_text + i);
+    ch[k] = str[0];
+    for (i = 0; str[i] != '\0'; i++)
+    {
+        for (j = 0; j <= k; j++)
+        {
+            if (ch[j] == str[i])
+            {
+                flag = 1;
+                break;
+            }
+            else
+            {
+                flag = 0;
+            }
+        }
+        if (flag == 0)
+        {
+            k++;
+            ch[k] = str[i];
+        }
+    }
+    cout << "\nUnique String: ";
+    for (i = 0; i <= k; i++)
+    {
+        cout << ch[i];
+    }
+}
+void sortf()
+{
+    for (i = 0; ch[i] != '\0'; i++)
+    {
+        a = ch[i];
+        count = 0;
+        for (j = 0; str[j] != '\0'; j++)
+        {
+            if (a == str[j])
+            {
+                count++;
+            }
+        }
+        freq[m] = count;
+        sum += count;
+        m++;
+    }
+    cout << "\nTotal characters: " << sum;
+    cout << "\nChar \t Frequency";
+    for (i = 0; i <= k; i++)
+    {
+        cout << "\n"
+             << ch[i] << "\t" << freq[i];
+    }
+    cout << "\n";
+    for (i = 0; i <= k; i++)
+    {
+        for (j = i + 1; j <= k; j++)
+        {
+            if (ch[i] > ch[j])
+            {
+                temp = ch[i];
+                ch[i] = ch[j];
+                ch[j] = temp;
+                temp1 = freq[i];
+                freq[i] = freq[j];
+                freq[j] = temp1;
+            }
+        }
+    }
+    // cout << "\nAfter sorting the frequency ";
+    // cout << "\nChar \t Frequency";
+    // for (i = 0; i <= k; i++)
+    // {
+    //     cout << "\n"
+    //          << ch[i] << "\t" << freq[i];
+    // }
+    // cout << "\n";
+}
+void prob_range()
+{
+    //cout << "\nTotal characters: " << sum;
+    for (i = 0; i <= k; i++)
+    {
+        p[i] = (double)freq[i] / sum;
+    }
+    r1[0] = 0;
+    r2[0] = p[0];
+    for (i = 1; i <= k; i++)
+    {
+        r1[i] = r2[i - 1];
+        r2[i] = r1[i] + p[i];
     }
 
-    qsort(suff, len_text, sizeof(struct rotation),cmpfunc);
-
-    int* suffix_arr
-    = (int*)malloc(len_text * sizeof(int));
-    for (int i = 0; i < len_text; i++)
-    suffix_arr[i] = suff[i].index;
-    return suffix_arr;
+    cout << "\nChar    Freq     Prob.          Range";
+    for (i = 0; i <= k; i++)
+        cout << "\n"
+             << ch[i] << "\t" << freq[i] << "\t" << p[i] << "\t" << r1[i] << "<=r<" << r2[i];
+    cout<<"\n\n";
 }
-
-char* findLastChar(char* input_text,int* suffix_arr, int n)
+void low_high()
 {
-    char* bwt_arr = (char*)malloc(n * sizeof(char));
-    int i;
-    for (i = 0; i < n; i++) {
-        int j = suffix_arr[i] - 1;
-        if (j < 0)
-        j = j + n;
-        bwt_arr[i] = input_text[j];
+    double l_range(char);
+    double h_range(char);
+    double range, high_range[100], low_range[100], jj;
+    for (i = 0; str[i] != '\0'; i++)
+    {
+        range = high - low;
+        for (j = 0; ch[j] != '\0'; j++)
+        {
+            if (ch[j] == str[i])
+                break;
+        }
+        low_range[i] = low + range * r1[j];
+        high_range[i] = low + range * r2[j];
+        high = high_range[i];
+        low = low_range[i];
     }
-    bwt_arr[i] = '\0';
-    return bwt_arr;
+
+    cout << "\nCHAR    LOW                            HIGH";
+    for (i = 0; str[i] != '\0'; i++)
+    {
+        printf("\n%c\t%.12lf\t\t%.12lf", str[i], low_range[i], high_range[i]);
+    }
+    printf("\n \nThe Encoded Number: %.12lf", low);
 }
-int search(char input_char, char* list)
+double l_range(char c)
 {
-    int i;
-    for (i = 0; i < strlen(list); i++) {
-        if (list[i] == input_char) {
-            return i;
+    double l;
+    for (i = 0; ch[i] != '\0'; i++)
+    {
+        if (ch[i] == c)
+        {
+            l = r1[i];
             break;
         }
     }
-    return 0;
+    return l;
 }
-
-void moveToFront(int curr_index, char* list)
+double h_range(char c)
 {
-    char* record = (char*)malloc(sizeof(char) * 26);
-    strcpy(record, list);
-    strncpy(list + 1, record, curr_index);
-    list[0] = record[curr_index];
-}
-void mtfEncode(char* input_text, int len_text, char* list)
-{
-    int i;
-    int* output_arr = (int*)malloc(len_text * sizeof(int));
-    for (i = 0; i < len_text; i++) { 
-        output_arr[i] = search(input_text[i], list);
-        printf("%d ", output_arr[i]);
-        moveToFront(output_arr[i], list);
+    double h;
+    for (i = 0; i <= k; i++)
+    {
+        if (ch[i] == c)
+        {
+            h = r1[i];
+            break;
+        }
     }
+    return h;
 }
-int main()
+void decoding()
 {
-    char input_text[] = "panama";
-    int len_text = strlen(input_text);
-    int* suffix_arr= computeSuffixArray(input_text, len_text);
-    char* bwt_arr= findLastChar(input_text, suffix_arr, len_text);
-    cout<<"Input text : "<<input_text<<endl;
-    cout<<"\nBurrows - Wheeler Transform : "<<bwt_arr<<endl;
-    char* list = (char*)malloc(sizeof(char) * 26);
-    strcpy(list, "abcdefghijklmnopqrstuvwxyz");
-    cout<<"\nMove to Front coding: ";
-    mtfEncode(bwt_arr, len_text, list);
-    cout<<endl;
-    return 0;
+    double encode_no;
+    double no;
+    encode_no = low;
+    //printf("\n The Encode No...%.12lf", encode_no);
+    printf("\n\nChar     Encoded No             Low     High");
+
+    for (i = 0; str[i] != '\0'; i++)
+    {
+        for (j = 0; ch[j] != '\0'; j++)
+        {
+            if (str[i] == ch[j])
+            {
+                printf("\n%c\t%.12lf\t\t%.2lf\t%.2lf", ch[j], encode_no, r1[j], r2[j]);
+                encode_no = (encode_no - r1[j]) / (r2[j] - r1[j]);
+            }
+        }
+    }
 }

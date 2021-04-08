@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch recursionTest",
+            "request": "launch",
+            "mainClass": "recursionTest",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
+            "name": "Launch CutType",
+            "request": "launch",
+            "mainClass": "DP.CutType",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
             "name": "Launch questions",
             "request": "launch",
             "mainClass": "DP.questions",
