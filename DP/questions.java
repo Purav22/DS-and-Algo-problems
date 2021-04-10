@@ -3,6 +3,7 @@ package DP;
 import java.rmi.dgc.Lease;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -816,6 +817,302 @@ public class questions {
         }
         return dp[n] = count + 1;
     }
+
+    // https://www.geeksforgeeks.org/applications-of-catalan-numbers/
+
+    // leetcode : 1216
+    // length of string - longest palindromic subsequnece
+
+    // Leetcode 95
+
+    // leetcode 940
+    public int distinctSubseqII(String S) {
+        S = '$' + S;
+        int n = S.length();
+        int[] dp = new int[n];
+        int[] lastOcc = new int[26];
+        Arrays.fill(lastOcc, -1);
+
+        int mod = (int) 1e9 + 7;
+
+        dp[0] = 1; // for empty String.
+        for (int i = 1; i < n; i++) {
+            char ch = S.charAt(i);
+            int idx = ch - 'a';
+            dp[i] = (2 * dp[i - 1]) % mod;
+            if (lastOcc[idx] != -1) {
+                dp[i] = (dp[i] - dp[lastOcc[idx] - 1] + mod) % mod;
+            }
+
+            lastOcc[idx] = i;
+        }
+
+        return dp[n - 1] - 1;
+    }
+
+    // leetcode 1278
+    public int[][] minChanges(String str) {
+        int n = str.length();
+        int[][] dp = new int[n][n];
+        for (int gap = 1; gap < n; gap++) {
+            for (int i = 0, j = gap; j < n; i++, j++) {
+                if (gap == 1)
+                    dp[i][j] = str.charAt(i) == str.charAt(j) ? 0 : 1;
+                else
+                    dp[i][j] = str.charAt(i) != str.charAt(j) ? dp[i + 1][j - 1] + 1 : dp[i + 1][j - 1];
+            }
+        }
+        return dp;
+    }
+
+    public int palindromePartition_(String str, int k, int si, int[][] dp, int[][] minChange) {
+        if (str.length() - si <= k) {
+            return dp[si][k] = (str.length() - si == k) ? 0 : (int) 1e9;
+        }
+
+        if (k == 1)
+            return dp[si][k] = minChange[si][str.length() - 1];
+        if (dp[si][k] != -1)
+            return dp[si][k];
+
+        int minAns = (int) 1e9;
+        for (int i = si; i < str.length() - 1; i++) {
+            int minChangesInMySet = minChange[si][i];
+            int minChangesInRecSet = palindromePartition_(str, k - 1, i + 1, dp, minChange);
+            if (minChangesInRecSet != (int) 1e9)
+                minAns = Math.min(minAns, minChangesInRecSet + minChangesInMySet);
+        }
+
+        return dp[si][k] = minAns;
+    }
+
+    public int palindromePartition(String str, int k) {
+        int[][] minChangeDP = minChanges(str);
+        int[][] dp = new int[str.length()][k + 1];
+        for (int[] d : dp)
+            Arrays.fill(d, -1);
+
+        return palindromePartition_(str, k, 0, dp, minChangeDP);
+    }
+
+    // leetcode 10
+
+    //343
+    public int integerBreak(int n) {
+        if(n == 2 || n ==3) return n - 1;
+        int[] dp = new int[n + 1];
+        return integerBreak_memo(n, dp);
+    }
+    public int integerBreak_memo(int n, int[] dp) {
+        if(n == 0) return dp[n] = 1;
+
+        if(dp[n] != 0) return dp[n];
+        int mult = 0;
+        for(int i = 1; i <= n; i++){
+            int ans = integerBreak_memo(n - i, dp);
+
+            mult = Math.max(mult, ans * i);
+        }
+
+        return dp[n] = mult;
+    }
+
+    //375
+    public int calculate(int l, int h,  int[][] dp) {
+        if (l >= h)
+            return 0;
+         
+         if(dp[l][h] != -1) return dp[l][h];
+        int minres = Integer.MAX_VALUE;
+        for (int i = l; i <= h; i++) {
+            int res = i + Math.max(calculate(i + 1, h, dp), calculate(l, i - 1, dp));
+            minres = Math.min(res, minres);
+        }
+
+        return dp[l][h] = minres;
+    }
+    public int getMoneyAmount(int n) {
+        int[][] dp = new int[n + 1][n + 1];
+        for(int[] d : dp) Arrays.fill(d, -1);
+        return calculate(1, n, dp);
+    }
+
+    //376
+    // 1 == big, 0 == small
+    public int calculate(int[] nums, int index, int takenAs, int[][] dp) {
+        if(dp[index][takenAs] != -1) return dp[index][takenAs];
+         int maxcount = 0;
+        for (int i = index + 1; i < nums.length; i++) {
+            if ((takenAs == 1 && nums[i] > nums[index]) || (takenAs == 0 && nums[i] < nums[index])){
+                if(takenAs == 1)
+                 maxcount = Math.max(maxcount, 1 + calculate(nums, i, 0, dp));
+                else
+                    maxcount = Math.max(maxcount, 1 + calculate(nums, i, 1, dp));
+            }
+        }
+        return dp[index][takenAs] = maxcount;
+    }
+
+    public int wiggleMaxLength(int[] nums) {
+        if (nums.length < 2)
+            return nums.length;
+        int n = nums.length;
+        int[][] dp = new int[n + 1][2];
+        for(int[] d : dp) Arrays.fill(d, -1);
+        return 1 + Math.max(calculate(nums, 0, 1, dp), calculate(nums, 0, 0, dp));
+    }
+
+    //403
+    public boolean canCross(int[] stones) {
+        int n = stones.length;
+        if(stones[1] != 1)  return false;
+        HashMap<Integer, ArrayList<Long>> dp = new HashMap<>();
+        for(int num : stones) 
+            dp.put(num, new ArrayList<>());
+        dp.get(0).add((long) 1);
+        return canCross_memo(stones, 1, 1, n, dp) == 1;
+       
+    }
+
+    //1 == true , 0 == false
+    public long canCross_memo(int[] arr, int idx, int k, int n, HashMap<Integer, ArrayList<Long>> dp) {
+        if(idx == n - 1){
+            dp.get(idx).add(k, (long) 1);
+            return 1;
+        }
+        if(dp.get(idx).contains((long)k)) return dp.get(idx).get(k);
+        //System.out.println(idx + " " + k);
+        boolean ans = false;
+        for(int i = idx + 1; i < n; i++){
+            int num = arr[i] - arr[idx];
+            
+            if(num == k - 1){
+                ans = ans || canCross_memo(arr, i, k - 1, n, dp) == 1;
+            }
+            if(num == k){
+                ans = ans || canCross_memo(arr, i, k, n, dp) == 1;
+            }
+            if(num == k + 1){
+                ans =  ans || canCross_memo(arr, i, k + 1, n, dp) == 1;
+            }
+            if(num > k + 1){
+                break;
+            }
+        }
+        dp.get(idx).add(k,ans ? (long)1 :(long) 0);
+        return ans ? 1 : 0;
+    }
+
+    public boolean canCross(int[] stones) {
+        Set<Integer> indexes = new HashSet();
+        for(int stone :stones){
+            indexes.add(stone);
+        }
+        
+        return solve(indexes, 1, 1, stones[stones.length - 1], new HashMap());
+    }
+    
+    private boolean solve(Set<Integer> indexes, int i, int k, int lastIndex, Map<Integer, Boolean> cache){
+        if(i == lastIndex){
+            return true;
+        }
+        if(i >= lastIndex || !indexes.contains(i)){
+            return false;
+        }
+        
+        int key = i * lastIndex + k;
+        if(cache.containsKey(key)){
+            return cache.get(key);
+        }
+        
+        cache.put(key, false);
+        for(int steps = Math.max(k - 1, 1); steps <= k + 1; steps++){
+            if(solve(indexes, i + steps, steps, lastIndex, cache)){
+                cache.put(key, true);
+                break;
+            }
+        }
+        return cache.get(key);
+    }
+
+
+    //410
+
+    public int splitArray(int[] nums, int m) {
+        int[][] memo = new int[nums.length][m+1];
+        
+        for (int i = 0; i < memo.length; i++) {
+            Arrays.fill(memo[i], -1);
+        }
+
+        return walk(nums, memo, 0, m);
+    }
+    
+    private int walk(int[] nums, int[][] memo, int start, int rem) { 
+	   
+        if (rem == 0 && start == nums.length) {
+            return 0;
+        }
+        if (rem == 0 || start == nums.length) {
+		    
+            return Integer.MAX_VALUE;
+        }
+        
+        int n = nums.length;
+        int ret = Integer.MAX_VALUE;
+        int curSum = 0;
+        
+        if (memo[start][rem] != -1) {
+            return memo[start][rem];
+        }
+        
+		
+        for (int i = start; i < n; i++) {
+            curSum += nums[i];
+            
+			
+            int futureSum = walk(nums, memo, i + 1, rem - 1);
+
+            ret = Math.min(ret, Math.max(curSum, futureSum));
+        }
+        
+        memo[start][rem] = ret;
+        return ret;
+    }
+
+    
+    //931
+    public int minFallingPathSum(int[][] arr) {
+        int n = arr.length;
+        int m = arr[0].length;
+        int[][] dp = new int[n][m];
+        for(int[] d : dp) Arrays.fill(d, -1000);
+
+        int ans = (int)1e9;
+        for(int i = 0; i < m; i++){
+            ans = Math.min(ans, minFallingPathSum_memo(arr, dp, 0, i, n, m));
+        }
+        return ans;
+    }
+
+    public int minFallingPathSum_memo(int[][] arr, int[][] dp, int r, int c, int n, int m) {
+        if(r == n - 1) return dp[r][c] = arr[r][c];
+
+        int count = (int)1e9;
+
+        if(dp[r][c] != -1000) return dp[r][c];
+        if(r + 1 < n && c - 1 >= 0){
+            count = Math.min(count, minFallingPathSum_memo(arr, dp, r + 1, c - 1, n, m) + arr[r][c]);
+        }if(r + 1 < n && c < m){
+            count = Math.min(count, minFallingPathSum_memo(arr, dp, r + 1, c, n, m) + arr[r][c]);
+        }
+        if(r + 1 < n && c + 1 < m){
+            count = Math.min(count, minFallingPathSum_memo(arr, dp, r + 1, c + 1, n, m) + arr[r][c]);
+        }
+
+        return dp[r][c] = count;
+    }
+
 
     public static void main(String[] args) {
 //         int n = 10;

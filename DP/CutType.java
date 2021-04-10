@@ -317,7 +317,7 @@ public class CutType{
             return dp[si][ei];
 
         int minAns = (int) 1e9;
-        for (int cut = si + 1; cut < ei; cut++) {
+        for (int cut = si + 1; cut < ei; cut++) {   
             int lans = minScoreTriangulation(arr, si, cut, dp);
             int rans = minScoreTriangulation(arr, cut, ei, dp);
 

@@ -30,89 +30,47 @@ public class codechef {
                 long n = Long.parseLong(s1[0]);
                 long m = Long.parseLong(s1[1]);
                 long k = Long.parseLong(s1[2]);
-
-                long[][] arr = new long[(int)n][(int)m];
-                long[][] dp = new long[(int)n][(int)m];
-                BigInteger[][] aux = new BigInteger[(int)n][(int)m];
                 
-                for(int i = 0; i < n; i++){
+                double[][] arr = new double[(int)n + 1][(int)m + 1];
+                
+                
+                for(int i = 1; i <= n; i++){
                     String s[] = br.readLine().split(" ");
-                    for(int j = 0; j < m; j++){
-                        
-                            arr[i][j] = Long.parseLong(s[j]);
-                            aux[i][j] = BigInteger.valueOf(arr[i][j]);
+                    for(int j = 1; j <= m; j++){
+                            arr[i][j] = Long.parseLong(s[j - 1]);
                     }
                 }
                 
-                for(int i = 0; i < n; i++){
-                    BigInteger prev = new BigInteger("0");
-                    for(int j = 0; j < m; j++){
-                        aux[i][j] = aux[i][j].add(prev);
-                        prev = aux[i][j];
+                for(int i = 0; i <= n; i++){
+                    double prev = 0;
+                    for(int j = 0; j <= m; j++){
+                        arr[i][j] += prev;
+                        prev = arr[i][j];
                     }
                 }
-                for(int i = 0; i < m; i++){
-                    BigInteger prev = new BigInteger("0");
-                    for(int j = 0; j < n; j++){
-                        aux[j][i] = aux[j][i].add(prev);
-                        prev = aux[j][i];
+                for(int j = 0; j <= m; j++){
+                    double prev = 0;
+                    for(int i = 0; j <= n; i++){
+                        arr[i][j] += prev;
+                        prev = arr[i][j];
                     }
                 }
 
-                
+                long zz = Math.min(m, n);
                 long ans = 0;
-                for(int i = (int)n - 1; i >= 0; i--)
-                    if(arr[i][(int)m - 1] >= k) {
-                        ans++;
-                        dp[i][(int)m - 1] = 1;
-                    }
-
-                for(int j = (int)m - 1; j >= 0; j--)
-                    if(arr[(int)n - 1][j] >= k) {
-                        ans++;
-                        dp[(int)n - 1][j] = 1;
-                    }
-
-                if(arr[(int)n - 1][(int)m - 1] >= k) ans--;
-                //for(int u = 1; u <= min; u++){
-                    for(int i = (int)n - 2; i >= 0; i--){
-                        for(int j = (int)m - 2; j >= 0; j--){
-                            // if((arr[i][j] + arr[i - u][j - u] - arr[i][j - u] - arr[i - u][j])/ (u * u) >= k)
-                            //     ans++;
-                           
+                
+                for(int len = 1; len <= zz; len++){
+                    for(int i = len; i <= n; i++){
+                        for(int j = len; j <= m; j++){
                             
-                                if(arr[i][j] >= k){
-                                    dp[i][j] = dp[i + 1][j + 1] + 1;
-                                }else{
-                                    if(dp[i + 1][j + 1] == 0){
-                                        dp[i][j] = 0;
-                                    }else{
-                                        long count = -1;
-                                        int num = 1;
-                                        while(i + num < n  &&  j + num < m){
-                                            
-                                            count = eveluate(i, j, i + num, j + num, aux, k, dp);
-                                            if(count != -1) break;
-                                            num++;
-                                        }
-                                       dp[i][j] = count == -1 ? 0 : count;
-                                    }
-                                        
-                                }
-                                
-                            
-                            ans += dp[i][j];
-
+                            if((arr[i][j] + arr[i - len][j - len] - arr[i][j - len] - arr[i - len][j]) / (len * len) >= k)
+                                ans++;
 
                         }
                     }
-                    // print2D(arr);
-                    // print2D(aux);
-                    // print2D(dp);
-                   //}
-                //System.out.println(ans);
+                    
+                   }
                sb.append(ans + "\n");
-                //System.out.println(worthyMetrix(n, m, k, arr));
                
             }
             System.out.print(sb);
@@ -151,22 +109,21 @@ public class codechef {
 
     // }
 
-    private static long eveluate(int i, int j,int ei, int ej, BigInteger[][] arr, long k, long[][] dp) {
-        BigInteger res = arr[ei][ej];
+    private static long eveluate(int i, int j,int ei, int ej, long[][] arr, long k, long[][] dp) {
+        long res = arr[ei][ej];
         if(i > 0)
-            res = res.subtract(arr[i - 1][ej]);
+            res = res - arr[i - 1][ej];
         if(j  > 0)
-            res  = res.subtract(arr[ei][j - 1]);
+            res  = res - arr[ei][j - 1];
         
         if(i > 0 && j > 0){
-            res = res.add(arr[i - 1][j - 1]);
+            res = res + arr[i - 1][j - 1];
         }
 
         long ele = ei - i + 1;
         ele = ele * ele;
-        res = res.divide(BigInteger.valueOf(ele));
-        int result = res.compareTo(BigInteger.valueOf(k));
-        if(result == 0 || result == 1) {
+       
+        if(res / ele >= k) {
             //System.out.println(1);
             return dp[ei][ej];
 
