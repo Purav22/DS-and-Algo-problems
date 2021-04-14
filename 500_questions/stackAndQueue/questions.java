@@ -1,5 +1,5 @@
 package 500_questions.stackAndQueue;
 
-public class questios {
+public class questions {
     
 }

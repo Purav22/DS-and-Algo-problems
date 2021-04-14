@@ -1,5 +1,5 @@
 package 500_questions.Tree;
 
-public class questios {
+public class questions {
     
 }
