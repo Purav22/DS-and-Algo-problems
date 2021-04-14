@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch TestClass",
+            "request": "launch",
+            "mainClass": "TestClass",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
+            "name": "Launch questions",
+            "request": "launch",
+            "mainClass": "StackAndQueue.questions",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
             "name": "Launch recursionTest",
             "request": "launch",
             "mainClass": "recursionTest",

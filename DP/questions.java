@@ -1113,6 +1113,161 @@ public class questions {
         return dp[r][c] = count;
     }
 
+    //983
+    public int mincostTickets(int[] days, int[] costs) {
+        int[][] dp = new int[366][366];
+        for(int[] d : dp) Arrays.fill(d, -1);
+        return mincostTickets_memo(days, costs, 0, 0, 1, dp);
+    }
+    public int mincostTickets_memo(int[] days, int[] costs, int idx, int sum, int day, int[][] dp) {
+        if(idx == days.length || day > days[days.length - 1]){
+            return dp[idx][day] = sum;
+        }
+        if(dp[idx][day] != -1) return dp[idx][day];
+
+        while(day > days[idx]) idx++;
+
+        while(day < days[idx]) day++;
+
+        int first = mincostTickets_memo(days, costs, idx + 1, sum + costs[0], day + 1, dp);
+        int second = mincostTickets_memo(days, costs, idx + 1, sum + costs[1], day + 7, dp);
+        int last = mincostTickets_memo(days, costs, idx + 1, sum + costs[2], day + 30, dp);
+
+        return dp[idx][day] = Math.min(first, Math.min(second, last));
+    }
+
+    //647
+    public int countSubstrings(String s) {
+        return minChanges(s);
+    }
+    public int minChanges(String str) {
+        int n = str.length();
+        int[][] dp = new int[n][n];
+        int count = 0;
+        for (int gap = 0; gap < n; gap++) {
+            for (int i = 0, j = gap; j < n; i++, j++) {
+                
+                if(gap == 0) {
+                    count++;
+                    dp[i][j] = 1;
+                }else if(gap == 1){
+                    if((str.charAt(i) == str.charAt(j))){
+                        dp[i][j] = 1;
+                        count++;
+                    }
+                }
+                else{
+                    if(str.charAt(i) == str.charAt(j) && dp[i + 1][j - 1] == 1){
+                        dp[i][j] = 1;
+                        count++;
+                    }
+                }
+                    
+            }
+        }
+        return count;
+    }
+    //712
+    public int minimumDeleteSum(String s1, String s2) {
+        int n = s1.length();
+        int m = s2.length();
+        int[][] dp = new int[n + 1][m + 1];
+        for(int[] d : dp) Arrays.fill(d, -1);
+        return minimumDeleteSum_memo(s1, s2, 0, 0, dp);
+    }
+    int calculate(String str,int K){
+           int res=0;
+            for(int k=K;k<str.length();k++) res+=str.charAt(k);
+            return res;
+    }
+    public int minimumDeleteSum_memo(String s1, String s2, int i, int j, int[][] dp) {
+        if(i == s1.length() || j == s2.length()){
+            if(i == s1.length()) return dp[i][j] = calculate(s2, j);
+            
+            return dp[i][j] = calculate(s1, i);
+            
+        }
+        if(dp[i][j] != -1)return dp[i][j];
+        
+        if(s1.charAt(i) == s2.charAt(j)){
+            return dp[i][j] = minimumDeleteSum_memo(s1, s2, i + 1, j + 1, dp);
+            
+        }else{
+           
+            int count1 = minimumDeleteSum_memo(s1, s2, i + 1, j, dp) + (s1.charAt(i));
+            int count2 = minimumDeleteSum_memo(s1, s2, i, j + 1, dp) + (s2.charAt(j));
+
+            return dp[i][j] = Math.min(count1, count2);
+        }
+    }
+
+    public int minimumDeleteSum_DP(String s1, String s2, int I, int J, int[][] dp) {
+        for(int i = s1.length(); i >= 0; i--){
+            for(int j = s2.length(); j >= 0; j--){
+                if(i == s1.length() || j == s2.length()){
+                    if(i == s1.length()){
+                        dp[i][j] = calculate(s2, j);
+                        continue;
+                    }
+                    else{
+
+                        dp[i][j] = calculate(s1, i);
+                        continue;
+                    }
+                    
+                }
+
+                if(s1.charAt(i) == s2.charAt(j)){
+                    dp[i][j] = dp[i + 1][j + 1]; //minimumDeleteSum_memo(s1, s2, i + 1, j + 1, dp);
+                    
+                }else{
+                   
+                    int count1 = dp[i + 1][j] + s1.charAt(i); //(s1, s2, i + 1, j, dp) + (s1.charAt(i));
+                    int count2 = dp[i][j + 1] + s2.charAt(j); //minimumDeleteSum_memo(s1, s2, i, j + 1, dp) + (s2.charAt(j));
+        
+                    dp[i][j] = Math.min(count1, count2);
+                }
+
+            }
+        }
+        
+        
+        return dp[I][J];
+    }
+
+    //1048
+    public int longestStrChain(String[] words) {
+        int n = words.length;
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, -1);
+         int ans = 0;
+        for(int i = 0; i < words.length; i++) ans = Math.max(ans, longestStrChain_memo(words, i, dp) + 1);
+         
+         return ans;
+    }
+    public int longestStrChain_memo(String[] words, int idx, int[] dp) {
+        //if(idx == words.length) return dp[idx] = 1;
+        if(dp[idx] != -1) return dp[idx];
+        int len = 0;
+        for(int i = 0; i < words.length; i++){
+            if(isPossible(words[idx], words[i])){
+                //System.out.println(i);
+                len = Math.max(len, longestStrChain_memo(words, i, dp) + 1);
+            }
+            
+        }
+        return dp[idx] = len;
+    }
+
+    private boolean isPossible(String s1, String s2) {
+        if(s1.length() + 1 != s2.length()) return false;
+        
+        int i = 0, j = 0;
+        for(i = 0; i < s1.length() && j < s2.length(); j++){
+            if(s1.charAt(i) == s2.charAt(j)) i++;
+        }
+        return i == s1.length();
+     }
 
     public static void main(String[] args) {
 //         int n = 10;

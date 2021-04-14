@@ -5,26 +5,36 @@ import java.util.*;
 
 public class TestClass {
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        PrintWriter wr = new PrintWriter(System.out);
-        int T = Integer.parseInt(br.readLine().trim());
-        for(int t_i = 0; t_i < T; t_i++)
-        {
-            int N = Integer.parseInt(br.readLine().trim());
-            String[] arr_V = br.readLine().split(" ");
-            int[] V = new int[N];
-            for(int i_V = 0; i_V < arr_V.length; i_V++)
-            {
-            	V[i_V] = Integer.parseInt(arr_V[i_V]);
-            }
+        
+        System.out.println("int | binary");
 
-            int out_ = minimumChanges(N, V);
-            System.out.println(out_);
+        int number = 8;
+        int  n= 8;
+        String binary = Integer.toBinaryString(number);
+        String padding = String.format("%" + n + "s", binary).replace(' ', '0');
+        String intPadding = String.format("%3s", number);
+
+        System.out.println(intPadding + " - " + padding);
+        // BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        // PrintWriter wr = new PrintWriter(System.out);
+        // int T = Integer.parseInt(br.readLine().trim());
+        // for(int t_i = 0; t_i < T; t_i++)
+        // {
+        //     int N = Integer.parseInt(br.readLine().trim());
+        //     String[] arr_V = br.readLine().split(" ");
+        //     int[] V = new int[N];
+        //     for(int i_V = 0; i_V < arr_V.length; i_V++)
+        //     {
+        //     	V[i_V] = Integer.parseInt(arr_V[i_V]);
+        //     }
+
+        //     int out_ = minimumChanges(N, V);
+        //     System.out.println(out_);
             
-         }
+        //  }
 
-         wr.close();
-         br.close();
+        //  wr.close();
+        //  br.close();
     }
     static int minimumChanges(int N, int[] arr){
        // Write your code here
