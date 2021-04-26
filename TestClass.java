@@ -14,7 +14,8 @@ public class TestClass {
         String padding = String.format("%" + n + "s", binary).replace(' ', '0');
         String intPadding = String.format("%3s", number);
 
-        System.out.println(intPadding + " - " + padding);
+        System.out.println(intPadding + " - " +  "\r" + padding );
+        System.out.println("HEllo afsfdfsef sf \r world");
         // BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         // PrintWriter wr = new PrintWriter(System.out);
         // int T = Integer.parseInt(br.readLine().trim());

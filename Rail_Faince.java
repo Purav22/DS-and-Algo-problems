@@ -1,7 +1,7 @@
 import java.util.*;
 
 class Rail_Fence{
-    int depth;
+    
     public static String Encryption(String plainText,int depth)throws Exception{
         int r=depth,len=plainText.length();
         int c=len/depth;

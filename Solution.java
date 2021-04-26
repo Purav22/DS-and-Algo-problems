@@ -5,37 +5,82 @@ import java.io.*;
 public class Solution {
 	
 	public static void main(String[] args) throws IOException{
-
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		try {
+		
+		// BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		// try {
 			
-			int T = Integer.parseInt(br.readLine());
-			while(T-- > 0){
-				String s1[] = br.readLine().split(" ");
-				String s2[] = br.readLine().split(" ");
-				int n, m, k;
-				n = Integer.parseInt(s1[0]);
-				m = Integer.parseInt(s1[1]);
-				k = Integer.parseInt(s1[2]);
+		// 	int T = Integer.parseInt(br.readLine());
+		// 	while(T-- > 0){
+		// 		String[] str1 = br.readLine().split(" ");
+		// 		int n = Integer.parseInt(str1[0]);
+		// 		int q = Integer.parseInt(str1[1]);
 
-				int[] arr = new int[n];
-				int[][] temp = new int[m][3];
+		// 		int arr[] = new int[n];
+		// 		String str2[] = br.readLine().split(" ");
 
-				for(int i = 0; i < ; i++){
-					arr[i] = Integer.parseInt(s2[i]);
-				}
-				for(int i = 0; i < m; i++){
-					String s[] = br.readLine().split(" ");
-					temp[i][0] = Integer.parseInt(s[0]);
-					temp[i][1] = Integer.parseInt(s[1]);
-					temp[i][2] = Integer.parseInt(s[2]);
-				}
-				booleanGame(n, m, k, arr, temp);
+		// 		for(int i = 0; i < n; i++){
+		// 			arr[i] = Integer.parseInt(str2[i]);
+		// 		}
+
+		// 		solve(arr);
+
+		// 		for(int i = 0; i < q; i++){
+		// 			String str3[] = br.readLine().split(" ");
+		// 			int x = Integer.parseInt(str3[0]);
+		// 			int v = Integer.parseInt(str3[1]);
+
+		// 			arr[x - 1] = v;
+		// 			solve(arr);
+		// 		}
 			
+		// 	}
+		// } catch (Exception e) {
+			
+		// }
+
+
+	}
+
+
+	private static void solve(int[] arr) {
+		ArrayList<Integer> ans = new ArrayList<>();
+		int count = 0;
+		for(int i = 0; i < arr.length; i++){
+			
+			if(i == 0) {
+				ans.add(arr[i]);
+				count = count | arr[i];
+				continue;
 			}
-		} catch (Exception e) {
+			int num = ans.get(i - 1);
+			num = num & arr[i];
+			count = count | num;
+			ans.add(num);
+		}
+		//System.out.println(ans.toString());
+		for(int i = 1; i < arr.length; i++){
 			
 		}
+
+		//System.out.println(ans.toString());
+		System.out.println(count);
+		
+		// int num = 0;
+		// for(int i = 0; i < arr.length; i++){
+		// 	for(int j = i; j < arr.length; j++){
+		// 		num = arr[j];
+		// 		for(int k = i; k <= j; k++){
+		// 			num = num & arr[k];
+		// 		}
+		// 		ans.add(num);
+		// 	}
+			
+		// }
+		// int a = 0;
+		// 	for(int n : ans) {
+		// 		a = a | n; 
+		// 	}
+		// System.out.println(a);
 	}
 
 
