@@ -21,7 +21,7 @@ public class questions {
             node.data=node.next.data;
             node.next=node.next.next;
           
-    }
+    }   
 
 
     // Find First Non Repeating Character Stream Characters

@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 
 
@@ -18,66 +19,118 @@ public class codechef {
             print1D(ar);
         }
     }
-    public static void main(String[] args) {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        //Scanner scan = new Scanner(System.in);
-        try {
-            StringBuilder sb = new StringBuilder();
-            int T = Integer.parseInt(br.readLine());
+
+    public static void main (String[] args) throws java.lang.Exception
+	{
+		// your code goes here
+		Scanner scan = new Scanner(System.in);
+		
+		try {
+		    int T = scan.nextInt();
 
             while(T-- > 0){
-                String s1[] = br.readLine().split(" ");
-                long n = Long.parseLong(s1[0]);
-                long m = Long.parseLong(s1[1]);
-                long k = Long.parseLong(s1[2]);
-                
-                double[][] arr = new double[(int)n + 1][(int)m + 1];
-                
-                
-                for(int i = 1; i <= n; i++){
-                    String s[] = br.readLine().split(" ");
-                    for(int j = 1; j <= m; j++){
-                            arr[i][j] = Long.parseLong(s[j - 1]);
-                    }
-                }
-                
-                for(int i = 0; i <= n; i++){
-                    double prev = 0;
-                    for(int j = 0; j <= m; j++){
-                        arr[i][j] += prev;
-                        prev = arr[i][j];
-                    }
-                }
-                for(int j = 0; j <= m; j++){
-                    double prev = 0;
-                    for(int i = 0; j <= n; i++){
-                        arr[i][j] += prev;
-                        prev = arr[i][j];
-                    }
+                long n = scan.nextLong();
+                long w = scan.nextLong();
+                long rod = scan.nextLong();
+                int[] arr = new int[(int)n];
+                HashMap<Integer, Integer> map = new HashMap<>();
+
+                for(int i = 0; i < n; i++){
+                    arr[i] = scan.nextInt();
+                    map.put(arr[i], map.getOrDefault(arr[i], 0) + 1);
                 }
 
-                long zz = Math.min(m, n);
-                long ans = 0;
-                
-                for(int len = 1; len <= zz; len++){
-                    for(int i = len; i <= n; i++){
-                        for(int j = len; j <= m; j++){
-                            
-                            if((arr[i][j] + arr[i - len][j - len] - arr[i][j - len] - arr[i - len][j]) / (len * len) >= k)
-                                ans++;
+                if(rod >= w){
+                    System.out.println("YES");
+                }else{
+                    w -= rod;
+                    for(int i = 0; i < n; i++){
+                        int count = map.get(arr[i]);
+
+                        if(count >= 2){
+                            if(count % 2 == 0){
+                                w -= count * arr[i];
+                            }else{
+                                w -= (count - 1) * arr[i];
+                            }
+                            map.put(arr[i], 0);
 
                         }
-                    }
-                    
-                   }
-               sb.append(ans + "\n");
-               
-            }
-            System.out.print(sb);
-        } catch (Exception e) {
 
-        }
+                        if(w <= 0){
+                            break;
+                        }
+                    }
+                    if(w <= 0)
+                        System.out.println("YES");
+                    else
+                        System.out.println("NO");
+                }
+
+            }
+		} catch(Exception e) {
+		}
 	}
+    // public static void main(String[] args) {
+    //     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    //     //Scanner scan = new Scanner(System.in);
+    //     try {
+    //         StringBuilder sb = new StringBuilder();
+    //         int T = Integer.parseInt(br.readLine());
+
+    //         while(T-- > 0){
+    //             String s1[] = br.readLine().split(" ");
+    //             long n = Long.parseLong(s1[0]);
+    //             long m = Long.parseLong(s1[1]);
+    //             long k = Long.parseLong(s1[2]);
+                
+    //             double[][] arr = new double[(int)n + 1][(int)m + 1];
+                
+                
+    //             for(int i = 1; i <= n; i++){
+    //                 String s[] = br.readLine().split(" ");
+    //                 for(int j = 1; j <= m; j++){
+    //                         arr[i][j] = Long.parseLong(s[j - 1]);
+    //                 }
+    //             }
+                
+    //             for(int i = 0; i <= n; i++){
+    //                 double prev = 0;
+    //                 for(int j = 0; j <= m; j++){
+    //                     arr[i][j] += prev;
+    //                     prev = arr[i][j];
+    //                 }
+    //             }
+    //             for(int j = 0; j <= m; j++){
+    //                 double prev = 0;
+    //                 for(int i = 0; j <= n; i++){
+    //                     arr[i][j] += prev;
+    //                     prev = arr[i][j];
+    //                 }
+    //             }
+
+    //             long zz = Math.min(m, n);
+    //             long ans = 0;
+                
+    //             for(int len = 1; len <= zz; len++){
+    //                 for(int i = len; i <= n; i++){
+    //                     for(int j = len; j <= m; j++){
+                            
+    //                         if((arr[i][j] + arr[i - len][j - len] - arr[i][j - len] - arr[i - len][j]) / (len * len) >= k)
+    //                             ans++;
+
+    //                     }
+    //                 }
+                    
+    //                }
+    //            sb.append(ans + "\n");
+               
+    //         }
+    //         System.out.print(sb);
+    //     } catch (Exception e) {
+
+    //     }
+	// }
 	
 	//   public static BigInteger worthyMetrix(int n, int m, int k, int[][] arr){
     //     //int ans = 0;
