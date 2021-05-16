@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch codechef",
+            "request": "launch",
+            "mainClass": "General.codechef",
+            "projectName": "Coding_581fedff"
+        },
+        {
+            "type": "java",
             "name": "Launch solution_codeforces",
             "request": "launch",
             "mainClass": "solution_codeforces",

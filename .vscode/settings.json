@@ -12,5 +12,8 @@
         "string": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled",
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "java.project.sourcePaths": [
+        ""
+    ]
 }

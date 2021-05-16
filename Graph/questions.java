@@ -1,4 +1,13 @@
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class questions {
 
@@ -52,6 +61,11 @@ public class questions {
     
     
     public ArrayList<Integer> isCyclePresent_DFS(){
+        int N = 0;
+        ArrayList<Edge>[] graph = new ArrayList[N];
+        //  for (int[] ar : arr){
+        //      graph[ar[0]].add(new Edge(ar[1], 0));
+        //  }
         int[] vis = new int[N];
         Arrays.fill(vis, -1);
         
@@ -67,7 +81,7 @@ public class questions {
         return ans;
     }
      
-    int[] findOrder(int N, int[][] arr){
+    ArrayList<Integer> findOrder(int N, int[][] arr){
         ArrayList<Edge>[] graph = new ArrayList[N];
          for (int[] ar : arr){
             graph[ar[0]].add(new Edge(ar[1], 0));
@@ -106,7 +120,7 @@ public class questions {
                         indegree[x][y]++;
                 }
     
-        LinkedList<Integer> que = new LikedList<>();
+        LinkedList<Integer> que = new LinkedList<>();
         for (int i = 0; i < n; i++)
             for (int j = 0; j < m; j++)
                 if (indegree[i][j] == 0)
@@ -139,27 +153,22 @@ public class questions {
     }
     
     
-    
+    //1061
     public String smallestEquivalentString(String A, String B, String S)
     {
+        par = new int[26];
         for (int i = 0; i < 26; i++){
-
+            par[i] = i;
         }
-            // par.push_back(i);
-        // par.resize(26,-1);
+           
     
         for (int i = 0; i < A.length(); i++)
         {
             int p1 = findPar(A.charAt(i) - 'a');
             int p2 = findPar(B.charAt(i) - 'a');
     
-            par[p1] = min(p1, p2);
-            par[p2] = min(p1, p2);
-    
-            //     if(p1 < p2)
-            //         par[p2] = p1;
-            //     else if(p2 < p1)par[p1] = p2;
-            //
+            par[p1] = Math.min(p1, p2);
+            par[p2] = Math.min(p1, p2);
         }
     
         String ans = "";
@@ -171,82 +180,84 @@ public class questions {
         return ans;
     }
     
-    //839
+   
     int[] par;
+    int[] size;
     
-        int findPar(int u) {
-            return par[u] == -1 ? u : (par[u] = findPar(par[u]));
+    int findPar(int u) {
+        return par[u] == -1 ? u : (par[u] = findPar(par[u]));
+    }
+
+    public int[] findRedundantConnection(int[][] edges) {
+        int N = edges.length + 1;
+        par = new int[N];
+        Arrays.fill(par, -1);
+
+        for (int[] edge : edges) {
+            int p1 = findPar(edge[0]);
+            int p2 = findPar(edge[1]);
+
+            if (p1 != p2)
+                par[p1] = p2;
+            else
+                return edge;
+
         }
-    
-        public int[] findRedundantConnection(int[][] edges) {
-            int N = edges.length + 1;
-            par = new int[N];
-            Arrays.fill(par, -1);
-    
-            for (int[] edge : edges) {
-                int p1 = findPar(edge[0]);
-                int p2 = findPar(edge[1]);
-    
-                if (p1 != p2)
-                    par[p1] = p2;
-                else
-                    return edge;
-    
-            }
-    
-            return new int[0];
-    
+
+        return new int[0];
+
+    }
+     //839
+    public boolean isSimilar(String s1, String s2) {
+        int count = 0;
+        for (int i = 0; i < s1.length(); i++) {
+            if (s1.charAt(i) != s2.charAt(i) && ++count > 2)
+                return false;
         }
-    
-        public boolean isSimilar(String s1, String s2) {
-            int count = 0;
-            for (int i = 0; i < s1.length(); i++) {
-                if (s1.charAt(i) != s2.charAt(i) && ++count > 2)
-                    return false;
-            }
-    
-            return true;
-    
-        }
-    
-        public int numSimilarGroups(String[] strs) {
-            int count = strs.length;
-            int n = strs.length;
-    
-            par = new int[n];
-            for (int i = 0; i < n; i++)
-                par[i] = i;
-    
-            for (int i = 0; i < n; i++) {
-                for (int j = i + 1; j < n; j++) {
-                    if (isSimilar(strs[i], strs[j])) {
-                        int p1 = findPar(i);
-                        int p2 = findPar(j);
-    
-                        if (p1 != p2) {
-                            par[p1] = p2;
-                            count--;
-                        }
+
+        return true;
+
+    }
+
+    public int numSimilarGroups(String[] strs) {
+        int count = strs.length;
+        int n = strs.length;
+
+        par = new int[n];
+        for (int i = 0; i < n; i++)
+            par[i] = i;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (isSimilar(strs[i], strs[j])) {
+                    int p1 = findPar(i);
+                    int p2 = findPar(j);
+
+                    if (p1 != p2) {
+                        par[p1] = p2;
+                        count--;
                     }
-    
                 }
-    
+
             }
-    
-            return count;
+
         }
+
+        return count;
+    }
     
     //305
-    vector<int> numIslands2(int m, int n, vector<vector<int>> &positions)
+    ArrayList<Integer> numIslands2(int m, int n, int[][] positions)
     {
-        par.resize(m * n, -1);
+        par = new int[n * m];
+        Arrays.fill(par, -1);
     
-        vector<vector<int>> dir = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        int[][] dir = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
     
-        vector<vector<int>> grid(m, vector<int>(n, 0));
+        int[][] grid = new int[m][n]; 
         int count = 0;
-        vector<int> ans;
-        for (vector<int> &pos : positions)
+        ArrayList<Integer> ans = new ArrayList<>();
+        for (int[] pos : positions)
         {
             int i = pos[0];
             int j = pos[1];
@@ -276,22 +287,23 @@ public class questions {
                 }
             }
     
-            ans.push_back(count);
+            ans.add(count);
         }
     
         return ans;
     }
     
     //305
-    vector<int> numIslands2(int m, int n, vector<vector<int>> &positions)
+    ArrayList<Integer> numIslands2(int m, int n, int[][] positions)
     {
-        par.resize(m * n, -1);
+        par = new int[n * m];
+        Arrays.fill(par, -1);
     
-        vector<vector<int>> dir = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        int[][] dir = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
     
         int count = 0;
-        vector<int> ans;
-        for (vector<int> &pos : positions)
+        ArrayList<Integer> ans = new ArrayList<>();
+        for (int[] pos : positions)
         {
             int i = pos[0];
             int j = pos[1];
@@ -321,7 +333,7 @@ public class questions {
                 }
             }
     
-            ans.push_back(count);
+            ans.add(count);
         }
     
         return ans;
@@ -362,17 +374,17 @@ public class questions {
     
         return minCostToSupplyWater(n, PIPES);
     }
-    
-    int numIslands(vector<vector<char>> &grid)
+    //200
+    public int numIslands(char[][] grid)
     {
-        int n = grid.size();
-        int m = grid[0].size();
+        int n = grid.length;
+        int m = grid[0].length;
     
         for (int i = 0; i < n * m; i++)
-            par.push_back(i);
+            par[i] = i;;
     
         int oncesCount = 0;
-        vector<vector<int>> dir{{1, 0}, {0, 1}};
+       int[][] dir = {{1, 0}, {0, 1}};
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < m; j++)
@@ -403,19 +415,22 @@ public class questions {
         return oncesCount;
     }
     
-    int maxAreaOfIsland(vector<vector<int>> &grid)
+    int maxAreaOfIsland(char[][] grid)
     {
     
-        int n = grid.size();
-        int m = grid[0].size();
-    
+        int n = grid.length;
+        int m = grid[0].length;
+
+        par = new int[n * m];
         for (int i = 0; i < n * m; i++)
-            par.push_back(i);
+            par[i] = i;
     
-        vector<int> componentSize(n * m, 1);
+        int[] componentSize = new int[(n * m)];
+
+        Arrays.fill(componentSize, 1);
         int maxArea = 0;
     
-        vector<vector<int>> dir{{1, 0}, {0, 1}};
+        int[][] dir = {{1, 0}, {0, 1}};
     
         for (int i = 0; i < n; i++)
         {
@@ -438,7 +453,7 @@ public class questions {
                                 componentSize[p1] += componentSize[p2];
                             }
                         }
-                        maxArea = max(maxArea, componentSize[p1]);
+                        maxArea = Math.max(maxArea, componentSize[p1]);
                     }
                 }
                 else
@@ -449,48 +464,48 @@ public class questions {
         return maxArea;
     }
     
-    long journeyToMoon(int n, vector<vector<int>> astronaut)
-    {
-        for (int i = 0; i < n; i++)
-        {
-            par.push_back(i);
-            size.push_back(1);
-        }
-    
-        for (vector<int> &ast : astronaut)
-        {
-            int p1 = findPar(ast[0]);
-            int p2 = findPar(ast[1]);
-    
-            if (p1 != p2)
-            {
-                par[p1] = p2;
-                size[p2] += size[p1];
+    public long journeyToMoon(int n, List<List<Integer>> astronaut) {
+        // Write your code here
+            par = new int[n];
+            size = new int[n];
+            for (int i = 0; i < n; i++){
+                par[i] = i;
+                size[i] = 1;
             }
-        }
-    
-        long sum = 0, totalPairs = 0;
-        for (int i = 0; i < n; i++)
-        {
-            if (par[i] == i)
-            {
-                totalPairs += sum * size[i];
-                sum += size[i];
+        
+            for (List<Integer> ast : astronaut){
+                int p1 = findPar(ast.get(0));
+                int p2 = findPar(ast.get(1));
+        
+                if (p1 != p2)
+                {
+                    par[p1] = p2;
+                    size[p2] += size[p1];
+                }
             }
-        }
+        
+            long sum = 0, totalPairs = 0;
+            
+            for (int i = 0; i < n; i++){
+                if (par[i] == i){
+                    totalPairs += sum * size[i];
+                    sum += size[i];
+                }
+            }
+        
+            return totalPairs;
     
-        return totalPairs;
-    }
+        }
     
     // https://www.hackerearth.com/practice/algorithms/graphs/minimum-spanning-tree/practice-problems/algorithm/mr-president/
-    int mrPresident(int n, vector<vector<int>> &edges, long k)
+     int mrPresident(int n,int[][] edges, long k)
     {
         for (int i = 0; i <= n; i++)
-            par.push_back(i);
+            par[i] = i;;
     
-        vector<int> mstEdgeWeight;
+        ArrayList<Integer> mstEdgeWeight = new ArrayList<>();
         long overallWeightSum = 0;
-        for (vector<int> &e : edges)
+        for (int[] e : edges)
         {
             int p1 = findPar(e[0]);
             int p2 = findPar(e[1]);
@@ -498,7 +513,7 @@ public class questions {
             if (p1 != p2)
             {
                 par[p1] = p2;
-                mstEdgeWeight.push_back(e[2]);
+                mstEdgeWeight.add(e[2]);
                 overallWeightSum += e[2];
                 n--;
             }
@@ -512,7 +527,7 @@ public class questions {
         int transform = 0;
         for (int i = mstEdgeWeight.size() - 1; i >= 0; i--)
         {
-            overallWeightSum = overallWeightSum - mstEdgeWeight[i] + 1;
+            overallWeightSum = overallWeightSum - mstEdgeWeight.get(i) + 1;
             transform++;
     
             if (overallWeightSum <= k)
@@ -522,51 +537,36 @@ public class questions {
         return overallWeightSum <= k ? transform : -1;
     }
     
-    void mrPresident()
-    {
-        ios_base::sync_with_stdio(false);
-        long n, m, k;
-        cin >> n >> m >> k;
     
-        vector<vector<int>> edges;
-        for (int i = 0; i < m; i++)
-        {
-            int u, v, w;
-            cin >> u >> v >> w;
-            edges.push_back({u, v, w});
-        }
-    
-        sort(edges.begin(), edges.end(), [](vector<int> &a, vector<int> &b) {
-            return a[2] < b[2];
-        });
-    
-        cout << mrPresident(n, edges, k) << endl;
-    }
     
     //815
-    int numBusesToDestination(vector<vector<int>> &routes, int src, int dest)
+    public int numBusesToDestination(int[][] routes, int src, int dest)
     {
     
         if (src == dest)
             return 0;
-        int n = routes.size();
-        unordered_map<int, vector<int>> busStandMapping;
+        int n = routes.length;
+        HashMap<Integer, ArrayList<Integer>> busStandMapping = new HashMap<>();
         int busNumber = 0;
-        for (vector<int> &busStandList : routes)
+        for (int[] busStandList : routes)
         {
             for (int busStand : busStandList)
             {
-                busStandMapping[busStand].push_back(busNumber);
+                if(!busStandMapping.containsKey(busStand))
+                    busStandMapping.put(busStand, new ArrayList<>());
+
+                busStandMapping.get(busStand).add(busNumber);
+                
             }
             busNumber++;
         }
     
-        unordered_set<int> isBusStandSeen;
-        vector<bool> isBusSeen(n, false);
+        HashSet<Integer> isBusStandSeen = new HashSet<>();
+        boolean[] isBusSeen = new boolean[n];
     
-        queue<int> que;
-        que.push(src);
-        isBusStandSeen.insert(src);
+        Queue<Integer> que = new ArrayDeque<>();
+        que.add(src);
+        isBusStandSeen.add(src);
     
         int level = 0;
         while (que.size() != 0)
@@ -574,10 +574,9 @@ public class questions {
             int size = que.size();
             while (size-- > 0)
             {
-                int busStand = que.front();
-                que.pop();
+                int busStand = que.remove();
     
-                vector<int> allBuses = busStandMapping[busStand];
+                ArrayList<Integer> allBuses = busStandMapping.get(busStand);
                 for (int busNo : allBuses)
                 {
                     if (isBusSeen[busNo])
@@ -585,10 +584,10 @@ public class questions {
     
                     for (int bs : routes[busNo]) // bs is bus stand
                     {
-                        if (isBusStandSeen.find(bs) == isBusStandSeen.end())
+                        if (!isBusStandSeen.contains(bs))
                         {
-                            que.push(bs);
-                            isBusStandSeen.insert(bs);
+                            que.add(bs);
+                            isBusStandSeen.add(bs);
     
                             if (bs == dest)
                                 return level + 1;
@@ -606,7 +605,7 @@ public class questions {
     
     //743
     public int networkDelayTime(int[][] times, int n, int k) {
-    
+
         ArrayList<int[]>[] graph = new ArrayList[n + 1];
         for (int i = 0; i < n + 1; i++)
             graph[i] = new ArrayList<>();

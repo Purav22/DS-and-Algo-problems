@@ -1,3 +1,5 @@
+package General;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
@@ -20,57 +22,83 @@ public class codechef {
         }
     }
 
-    public static void main (String[] args) throws java.lang.Exception
-	{
+    public static void main (String[] args) throws java.lang.Exception {
 		// your code goes here
-		Scanner scan = new Scanner(System.in);
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		try {
-		    int T = scan.nextInt();
+		    int T = Integer.parseInt(br.readLine());
 
             while(T-- > 0){
-                long n = scan.nextLong();
-                long w = scan.nextLong();
-                long rod = scan.nextLong();
-                int[] arr = new int[(int)n];
-                HashMap<Integer, Integer> map = new HashMap<>();
-
-                for(int i = 0; i < n; i++){
-                    arr[i] = scan.nextInt();
-                    map.put(arr[i], map.getOrDefault(arr[i], 0) + 1);
-                }
-
-                if(rod >= w){
-                    System.out.println("YES");
-                }else{
-                    w -= rod;
-                    for(int i = 0; i < n; i++){
-                        int count = map.get(arr[i]);
-
-                        if(count >= 2){
-                            if(count % 2 == 0){
-                                w -= count * arr[i];
-                            }else{
-                                w -= (count - 1) * arr[i];
-                            }
-                            map.put(arr[i], 0);
-
-                        }
-
-                        if(w <= 0){
-                            break;
-                        }
-                    }
-                    if(w <= 0)
-                        System.out.println("YES");
-                    else
-                        System.out.println("NO");
-                }
-
+                String input[] = br.readLine().split(" ");
+                int n = Integer.parseInt(input[0]);
+                int m = Integer.parseInt(input[1]);
+                solveModularEquation(n, m);
             }
 		} catch(Exception e) {
 		}
 	}
+
+    public static void solveModularEquation(int n, int m) {
+
+
+        for(int a = 1; a <= n; a++){
+            for(int b = a + 1; b <= n; b++){
+                int num1 = ((m % a) % b);
+                int num2 = ((m % b) % a);
+                // System.out.println((m % a) + "  " + (m % b));
+                
+                if(num1 != num2){
+                    System.out.println(a + " " + b + " " + num1 + " " + num2 + " --->");
+                }
+                    // System.out.println((num1 == num2));
+            }
+        }
+        System.out.println(n);
+
+    }
+    public static long solveXorEquality(int n){
+        int x = 2;
+        int mod = (int)1e9 + 7;
+        long res = 1;
+        x = x % mod;
+
+        if (x == 0)
+            return 0;
+        
+        while (n > 0)
+        {
+        
+            if ((n & 1) != 0)
+            res = (res * x) % mod;
+        
+            n = n >> 1; 
+            x = (x * x) % mod;
+        }
+        return res;
+    } 
+
+    static int power(int x, int y, int p){
+    int res = 1; // Initialize result
+ 
+    x = x % p; // Update x if it is more than or
+    // equal to p
+ 
+     // In case x is divisible by p;
+ 
+    while (y > 0)
+    {
+ 
+      // If y is odd, multiply x with result
+      if ((y & 1) != 0)
+        res = (res * x) % p;
+ 
+      // y must be even now
+      y = y >> 1; // y = y/2
+      x = (x * x) % p;
+    }
+    return res;
+  }
     // public static void main(String[] args) {
     //     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     //     //Scanner scan = new Scanner(System.in);
