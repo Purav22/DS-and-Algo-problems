@@ -3,6 +3,7 @@ package Tree;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.LinkedList;
 
 public class gTree {
@@ -270,10 +271,166 @@ public class gTree {
         return ans;
     }
 
+    //serialized and deSerialized
+    public static String serialize(Node root) {  
+        StringBuilder result = new StringBuilder();  
+        if (null != root) {  
+             result.append(".");  
+             result.append(root.key);  
+             result.append(".");  
+             for (Node child : root.childs) {  
+                  result.append(Node.serialize(child));  
+             }  
+             result.append(")");  
+        }  
+        return result.toString();  
+   }  
+   public static Node deserialize(String node)  {  
+        Node result = null;  
+        Stack<Node> stack = new Stack<Node>();  
+        boolean isData = false;  
+        StringBuilder data = null;  
+        for (int i = 0; i < node.length(); i++) {  
+             if (node.charAt(i) == '.') {  
+                  isData = !isData;  
+                  if (isData) {  
+                       data = new StringBuilder();  
+                  } else {  
+                       Node child = new Node(data.toString());  
+                       if (!stack.isEmpty()) {  
+                            Node parent = stack.peek();  
+                            parent.addChild(child);  
+                       } else {  
+                            result = child;  
+                       }  
+                       stack.push(child);  
+                  }  
+             } else {  
+                  if (isData) {  
+                       data.append(node.charAt(i));  
+                  } else if (node.charAt(i) == ')') {  
+                       stack.pop();  
+                  } else {  
+                  }  
+             }  
+        }  
+        return result;  
+   }  
+
+                                //****************Amazon asked************************* */
+
+//    Given an n-ary tree of resources arranged hierarchically. A process needs to lock a resource node in order to use it. But a node cannot be 
+// locked if any of its descendant or ancestor is locked. You are supposed to:
+// -> write the structure of node
+// -> write codes for
+
+// Islock()- returns true if a given node is locked and false if it is not
+// Lock()- locks the given node if possible and updates lock information
+// Unlock()- unlocks the node and updates information.
+// Codes should be :
+
+// Islock –O(1)
+// Lock()- O(log n)
+// unLock()- O(log n)
+
+
+    // class Tree {
+    //     private: 
+        
+    //         // Tree Structure related.
+    //         List <TreeNode *> _children;
+    //         TreeNode * _parent;
+            
+    //         // Locking related.
+    //         bool _locked = false;
+    //         uint _numDescendantsLocked = 0;
+    // };
+    // bool Tree::IsLocked() {
+    //     return _locked;
+    // }
+
+    // bool Tree::Lock() {
+    //     // Any descendants locked?
+    //     if (_numDescendantsLocked > 0) { return false;}
+    
+    //     // Check if any ancestor is locked.  
+    //     Tree *parent = _parent;
+    //     while (parent) {
+    //         if (parent->IsLocked()) {
+    //             return false;
+    //         }
+    //         parent = parent->_parent;
+    //     }
+    //     // Can lock now.
+    //     parent = _parent;
+    //     while(parent) {
+    //         parent->_numDescendantsLocked++;
+    //         parent = parent->_parent;
+    //     }
+    //     _locked = true;
+    //     return true;
+    // }
+
+
+
+
+
     // diameter of GT
+
+    static int depthOfTree(Node ptr)
+    {
+        // Base case
+        if (ptr == null)
+            return 0;
+    
+        int maxdepth = 0;
+    
+        // Check for all children and find
+        // the maximum depth
+        for (Node it : ptr.child)
+    
+            maxdepth = Math.max(maxdepth,
+                                depthOfTree(it));
+    
+        return maxdepth + 1;
+    }
+    
+    // Function to calculate the diameter
+    // of the tree
+    static int diameter(Node ptr)
+    {
+        // Base case
+        if (ptr == null)
+            return 0;
+    
+        // Find top two highest children
+        int max1 = 0, max2 = 0;
+        for (Node it : ptr.child)
+        {
+            int h = depthOfTree(it);
+            if (h > max1)
+            {
+                max2 = max1;
+                max1 = h;
+            }
+            else if (h > max2)
+            max2 = h;
+        }
+    
+        // Iterate over each child for diameter
+        int maxChildDia = 0;
+        for (Node it : ptr.child)
+            maxChildDia = Math.max(maxChildDia,
+                                diameter(it));
+    
+        return Math.max(maxChildDia, max1 + max2 + 1);
+    }
+    
     
 
-    public static void main(String[] args) {
 
+      
+    public static void main(String[] args) {
+        
     }
 }

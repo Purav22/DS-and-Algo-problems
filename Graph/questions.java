@@ -656,58 +656,64 @@ public class questions {
     }
     
     //1192
-    vector<int> dis, low;
-    vector<bool> vis;
-    int time = 0;
-    vector<vector<int>> res;
+    public List<List<Integer>> criticalConnections(int N, List<List<Integer>> connections) {
+        low = new int[N];
+        dis = new int[N];
+        vis = new boolean[N];
+        List<List<Integer>> list = new ArrayList<>();
+        
     
-    void dfs(int src, int par, int n, vector<vector<int>> &graph)
-    {
+        ArrayList<Integer>[] graph = new ArrayList[N];
+        
+        for(int i = 0; i < N; i++) graph[i] = new ArrayList<>();
+        
+        for(List<Integer> con : connections){
+            int u = con.get(0);
+            int v = con.get(1);
+            graph[u].add(v);
+            graph[v].add(u);
+        }
+        
+        for (int i = 0; i < N; i++) {
+            if (!vis[i]) {
+                dfs(i, -1, N, graph, list);
+                
+            }
+        }
+        return list;
+        
+    }
+     int[] dis, low;
+     boolean[] vis;
+     int time = 0;
+    public void dfs(int src, int par, int N, ArrayList<Integer>[] graph, List<List<Integer>> list) {
         dis[src] = low[src] = time++;
         vis[src] = true;
-    
-        for (int nbr : graph[src])
-        {
-            if (!vis[nbr])
-            {
-                dfs(nbr, src, n, graph);
-    
-                if (dis[src] < low[nbr])
-                    res.push_back({src, nbr});
-    
-                low[src] = min(low[src], low[nbr]);
+
+        for (Integer nbr : graph[src]) {
+            if (!vis[nbr]) {
+
+                
+
+                dfs(nbr, src, N, graph,list);
+
+                if (dis[src] < low[nbr]) { // why not this? : low[src] <= low[nbr]
+                    
+                   List<Integer> l = new ArrayList<>();
+                    l.add(src);
+                    l.add(nbr);
+                    list.add(l);
+                }
+
+                low[src] = Math.min(low[src], low[nbr]);
+
+            } else if (nbr != par) {
+                low[src] = Math.min(low[src], dis[nbr]); // why not this? : low[src] = Math.min(low[src], low[nbr]);
             }
-            else if (nbr != par)
-                low[src] = min(dis[nbr], low[src]);
         }
     }
-    
-    vector<vector<int>> criticalConnections(int n, vector<vector<int>> &connections)
-    {
-        vector<vector<int>> graph(n);
-        for (vector<int> &ar : connections)
-        {
-            graph[ar[0]].push_back(ar[1]);
-            graph[ar[1]].push_back(ar[0]);
-        }
-    
-        dis.resize(n, 0);
-        low.resize(n, 0);
-        vis.resize(n, false);
-    
-        dfs(0, -1, n, graph);
-        return res;
-    }
-    class Edge
-    {
-    public:
-        int v, w;
-        Edge(int v, int w)
-        {
-            this->v = v;
-            this->w = w;
-        }
-    };
+
+
     public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
         int[] dis = new int[n];
         Arrays.fill(dis, (int) 1e9);
