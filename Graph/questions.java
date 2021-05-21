@@ -779,4 +779,72 @@ public class questions {
     
         return ans;
     }
+
+    //959
+    public int regionsBySlashes(String[] grid) {
+        int n = grid.length + 1;
+        
+        par = new int[n * n];
+        
+
+        for(int i = 0; i < par.length; i++){
+            par[i] = i;
+            int r = i / n;
+            int c = i % n;
+            if(r == 0 || r == n - 1 || c == 0 || c == n - 1)
+                par[i] = 0;
+        }
+
+
+        // for(int i = 0; i < par.length; i++){
+        //   System.out.println(par[i]);
+        // }
+        int ans = 1;
+        for(int i = 0; i < grid.length;i++){
+            String str = grid[i];
+
+            for(int j = 0; j < str.length(); j++){
+                char ch = str.charAt(j);
+                if(ch == '\\'){
+                    int p1 = findPar(i * n + j);
+                    int p2 = findPar((i + 1) * n + (j + 1));
+
+                    if(p1 == p2) ans++;
+                    par[p1] = p2;
+                    
+                }else if(ch == '/'){
+                    int p2 = findPar(i * n + (j + 1));
+                    int p1 = findPar((i + 1) * n + (j));
+
+                    if(p1 == p2) ans++;
+                    par[p1] = p2;
+                }
+            }
+        }
+        return ans;
+    }
+
+    //947
+    public int removeStones(int[][] stones) {
+        int n = stones.length;
+       par = new int[n];
+       int count = 0;
+       for(int i = 0; i < n; i++){
+           par[i] = i;
+       }
+
+       for(int i = 0; i < n; i++){
+           for(int j = i + 1; j < n; j++){
+               if(stones[i][0] == stones[j][0] || stones[i][1] == stones[j][1]){
+                   int p1 = findPar(i);
+                   int p2 = findPar(j);
+                   if(p1 != p2){
+                       par[p2] = p1;
+                       count++;
+                   }  
+               }
+           }
+       }
+       return count;
+   }
 }

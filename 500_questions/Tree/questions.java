@@ -1,6 +1,8 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Stack;
 
 public class questions {
@@ -146,11 +148,11 @@ public class questions {
 
 
     // https://www.geeksforgeeks.org/iterative-postorder-traversal/
-    static void postOrderIterative(node root)
+    static void postOrderIterative(Node root)
     {
         // Create two stacks
-        s1 = new Stack<>();
-        s2 = new Stack<>();
+        Stack<Node> s1 = new Stack<>();
+        Stack<Node> s2 = new Stack<>();
   
         if (root == null)
             return;
@@ -161,7 +163,7 @@ public class questions {
         // Run while first stack is not empty
         while (!s1.isEmpty()) {
             // Pop an item from s1 and push it to s2
-            node temp = s1.pop();
+            Node temp = s1.pop();
             s2.push(temp);
   
             // Push left and right children of
@@ -174,7 +176,7 @@ public class questions {
   
         // Print all elements of second stack
         while (!s2.isEmpty()) {
-            node temp = s2.pop();
+            Node temp = s2.pop();
             System.out.print(temp.data + " ");
         }
     }
@@ -275,5 +277,142 @@ public class questions {
 
         width(root.left, hl - 1, ans);
         width(root.right, hl + 1, ans);
+    }
+
+
+
+    //https://practice.geeksforgeeks.org/problems/boundary-traversal-of-binary-tree/1
+    ArrayList <Integer> printBoundary(Node node)
+	{
+	   ArrayList<Integer> ans = new ArrayList<>();
+       if(node == null) return ans;
+
+        ans.add(node.data);
+        if(node.left == null && node.right == null) {
+            return ans;
+        }
+        
+        leftBoundary(node.left, ans);
+        leafNodes(node, ans);
+        rightBoundary(node.right, ans);
+        return ans;
+	}
+
+    public void leftBoundary(Node node, ArrayList<Integer> ans){
+        if(node == null) return;
+
+        if(node.left != null || node.right != null) ans.add(node.data);
+        if(node.left != null){
+            leftBoundary(node.left, ans);
+        }else if(node.right != null)
+            leftBoundary(node.right, ans);
+
+    }
+    public void rightBoundary(Node node, ArrayList<Integer> ans){
+        if(node == null) return;
+
+        
+        if(node.right != null){
+            rightBoundary(node.right, ans);
+        }else if(node.left != null)
+            rightBoundary(node.left, ans);
+
+        if(node.left != null || node.right != null) ans.add(node.data);
+
+       
+    }
+    public void leafNodes(Node node, ArrayList<Integer> ans){
+        if(node == null) return;
+        
+        leafNodes(node.left, ans);
+        if(node.left == null && node.right == null) ans.add(node.data);
+        leafNodes(node.right, ans);
+        
+
+    }
+
+
+    //https://www.geeksforgeeks.org/perfect-binary-tree-specific-level-order-traversal/
+
+
+    /* The standard level order traversal idea will slightly change here. 
+        Instead of processing ONE node at a time, we will process TWO nodes at a time.
+        And while pushing children into queue, the enqueue order will be: 1st node’s left child, 
+        2nd node’s right child, 1st node’s right child and 2nd node’s left child. */
+
+
+    void printSpecificLevelOrder(Node node) 
+    {
+        if (node == null)
+            return;
+   
+        // Let us print root and next level first
+        System.out.print(node.data);
+   
+        //  Since it is perfect Binary Tree, right is not checked
+        if (node.left != null)
+            System.out.print(" " + node.left.data + " " + node.right.data);
+   
+        // Do anything more if there are nodes at next level in
+        // given perfect Binary Tree
+        if (node.left.left == null)
+            return;
+   
+        // Create a queue and enqueue left and right children of root
+        Queue<Node> q = new LinkedList<Node>();
+        q.add(node.left);
+        q.add(node.right);
+   
+        // We process two nodes at a time, so we need two variables
+        // to store two front items of queue
+        Node first = null, second = null;
+   
+        // traversal loop
+        while (!q.isEmpty()) 
+        {
+            // Pop two items from queue
+            first = q.peek();
+            q.remove();
+            second = q.peek();
+            q.remove();
+   
+            // Print children of first and second in reverse order
+            System.out.print(" " + first.left.data + " " +second.right.data);
+            System.out.print(" " + first.right.data + " " +second.left.data);
+   
+            // If first and second have grandchildren, enqueue them
+            // in reverse order
+            if (first.left.left != null) 
+            {
+                q.add(first.left);
+                q.add(second.right);
+                q.add(first.right);
+                q.add(second.left);
+            }
+        }
+    }
+    public static Node createTree(int arr[], int N)
+    {
+        //Your code here
+        HashMap<Integer, Node> map = new HashMap<>();
+        map.put(-1, new Node(-1));
+        for(int i = 0; i < N; i++){
+            map.put(i, new Node(i));
+            
+        }
+        
+        int temp = 0;
+        for(int i = 0; i < N; i++){
+            Node curr = map.get(arr[i]);
+            if(arr[i] == -1){
+                temp = i;
+            }
+            if(curr.left == null){
+                curr.left = map.get(i);
+            }else{
+                curr.right = map.get(i);
+            }
+        }
+        return map.get(temp);
     }
 }
