@@ -1,3 +1,5 @@
+package Graph;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -847,4 +849,30 @@ public class questions {
        }
        return count;
    }
+
+   //841
+   public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+    int n = rooms.size();
+    boolean[] vis = new boolean[n];
+    vis[0] = true;
+    dfs(rooms, vis, 0);
+    return count == n;
+    
+    }
+
+    int count = 1;
+    public void dfs(List<List<Integer>> rooms, boolean[] vis, int src){
+        List<Integer> temp = rooms.get(src);
+        
+        for(int i = 0; i < temp.size(); i++){
+            if(!vis[temp.get(i)]){
+                
+                vis[temp.get(i)] = true;
+                count++;
+                dfs(rooms, vis, temp.get(i));
+            }
+        }
+        
+        
+    }
 }

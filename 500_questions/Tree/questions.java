@@ -415,4 +415,69 @@ public class questions {
         }
         return map.get(temp);
     }
+
+    //https://practice.geeksforgeeks.org/problems/binary-tree-to-dll/1#
+    Node bToDLL(Node root)
+    {
+	
+	    if(root == null) return null;
+	    solve(root);
+	    return head;
+    }
+    Node temp = null;
+    Node head = null;
+    public void solve(Node root){
+        if(root == null) return;
+        solve(root.left);
+        if(temp != null){
+            root.left = temp;
+            temp.right = root;
+            temp = root;
+        }else{
+            head = root;
+            temp = root;
+        }
+        
+        solve(root.right);
+    }
+
+
+    //https://practice.geeksforgeeks.org/problems/lowest-common-ancestor-in-a-binary-tree/1
+    Node lca(Node node, int n1,int n2)
+	{
+	    ArrayList<Node> l1 = new ArrayList<>();
+	    ArrayList<Node> l2 = new ArrayList<>();
+	    flag = false;
+	    NodeToRootPath(node, n1, l1);
+	    
+	    flag = false;
+	    NodeToRootPath(node, n2, l2);
+	    
+	    Node ans = null;
+	      
+	    for(int i = 0; i < l1.size() && i < l2.size(); i++){
+	        if(l1.get(i).data != l2.get(i).data) break;
+	        
+	        ans = l1.get(i);
+	    }
+	    return ans;
+		// Your code here
+	}
+	boolean flag = false;
+	public void NodeToRootPath(Node node, int data, ArrayList<Node> ans){
+	    
+	    
+	    if(node == null || flag) return;
+	    ans.add(node);
+	    if(node.data == data){
+	        flag = true;
+	        return;
+	    }
+	    NodeToRootPath(node.left, data, ans);
+	    NodeToRootPath(node.right, data, ans);
+	    
+	    if(!flag){
+	        ans.remove(ans.size() - 1);
+	    }
+	}
 }

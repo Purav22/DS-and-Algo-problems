@@ -21,10 +21,10 @@ public class codechef {
             print1D(ar);
         }
     }
-
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public static void main (String[] args) throws java.lang.Exception {
 		// your code goes here
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
 		
 		try {
 		    int T = Integer.parseInt(br.readLine());

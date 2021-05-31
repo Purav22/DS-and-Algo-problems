@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Stack;
+
 public class N_Ary_Tree {
      //https://practice.geeksforgeeks.org/problems/check-mirror-in-n-ary-tree1528/1
      static int checkMirrorTree(int n, int e, int[] A, int[] B) {
