@@ -8,7 +8,15 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 
+class pair{
+    static int a;
+    static int b;
 
+   void add(int m, int n){
+    a = m + n;
+    b = a + n;
+   }
+}
 public class codechef {
     public static void print1D(long[] arr) {
         for (long ele : arr) {
@@ -22,22 +30,17 @@ public class codechef {
         }
     }
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    public static void main (String[] args) throws java.lang.Exception {
-		// your code goes here
-		
-		
-		try {
-		    int T = Integer.parseInt(br.readLine());
-
-            while(T-- > 0){
-                String input[] = br.readLine().split(" ");
-                int n = Integer.parseInt(input[0]);
-                int m = Integer.parseInt(input[1]);
-                solveModularEquation(n, m);
-            }
-		} catch(Exception e) {
-		}
-	}
+    
+    
+    public static void main (String[] args) {
+        
+       pair p = new pair();
+       pair p2 = new pair();
+       int m = 2;
+       p.add(m, m + 1);
+       p2.add(5, m);
+       System.out.println(p.a + " " + p2.b);
+    }
 
     public static void solveModularEquation(int n, int m) {
 

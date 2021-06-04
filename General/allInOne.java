@@ -3,87 +3,8 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class allInOne {
-    public static void main (String[] args) throws java.lang.Exception{
-        
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		try {
-		    int T = Integer.parseInt(br.readLine());
-            while(T-- > 0){
-                String str[] = br.readLine().split(" ");
 
-                int n = Integer.parseInt(str[0]);
-                int e = Integer.parseInt(str[1]);
-                int h = Integer.parseInt(str[2]);
-                int a = Integer.parseInt(str[3]);
-                int b = Integer.parseInt(str[4]);
-                int c = Integer.parseInt(str[5]);
-
-                if((n > e && n > h)) {
-                    System.out.println(-1);
-                } else if(n > e * 2 && n > h * 3){
-                    System.out.println(-1);
-                }else if(n == h && n == e){
-                    System.out.println((n * c));
-                }
-                else{
-                    int min = Integer.MAX_VALUE;
-                    if(n < h && n < e){
-                        if((a == b && b == c) || (a > c && b > c)){
-                            System.out.println(n * c);
-                            continue;
-                        }
-                        min = n * c;
-                    }
-                    int omlet = e / 2;
-
-                    int milkshake = h / 3;
-                    e = e % 2;
-                    h = h % 3;
-                    int cake = Math.min(e,h);
-
-                    
-                    int sum = (omlet * a) + (milkshake * b) + (cake * c);
-                    if(sum < min) min = sum;
-                    while(omlet > 0 && milkshake > 0){
-                        omlet--;
-                        milkshake--;
-                        cake = cake + 2;
-                        sum = (omlet * a) + (milkshake * b) + (cake * c);
-                        if(sum < min) min = sum;
-                    }
-                    System.out.println(min);
-                }
-
-
-                // int num = 1;
-                // int count = 1;
-                // while(count <  n){
-                //     num = num * 2;
-                //     count += num;
-                // }
-
-                // int ans1 = num - 1;
-                // int ans2 = num + count - n;
-
-                // System.out.println((ans1 * ans2));
-                // // long ans = 0, num2 = 0;
-                // // int num1 = 0, num3 = 0;
-                // // for(int i = 0; i < num; i++){
-                // //     num2 = (num ^ i);
-                // //     //System.out.println(num2);
-                // //     if(ans < num2 * i){
-                // //         ans = num2 * i;
-                // //         num1 = i;
-                // //         num3 = (int)num2;
-                // //     } 
-                // //     //System.out.println(ans);
-                // // }
-                // // System.out.println(" ->" + num1 + " " + num3);
-            }
-		    
-		} catch(Exception e) {
-		}
-    }
+   
 
    
    

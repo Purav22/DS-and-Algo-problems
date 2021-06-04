@@ -944,4 +944,38 @@ public class questions{
         return maxRes;
 
     }
+
+    //556
+    public int nextGreaterElement(int num) {
+        char[] arr = (num + "").toCharArray();
+        int n = arr.length;
+        if(n == 1) return -1;
+
+        int i = n - 1;
+
+        for(i = n - 1; i > 0; i--){
+            if(arr[i - 1] < arr[i]){
+                break;
+            }
+        }
+
+        if(i == 0) return -1;
+        int replace = arr[i - 1];
+        int smallest = i;
+        for(int j = i + 1; j < n; j++){
+            if(arr[smallest] >= arr[j] && arr[j] > replace) {
+                smallest = j;
+            }
+        }
+
+        char temp = arr[i - 1];
+        arr[i - 1] = arr[smallest];
+        arr[smallest] = temp;
+
+
+        Arrays.sort(arr, i, n);
+        Long val = Long.parseLong(new String(arr));
+        return (int) (val > Integer.MAX_VALUE ? -1 : val);
+ 
+    }
 }

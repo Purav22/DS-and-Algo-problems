@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch codechef",
+            "request": "launch",
+            "mainClass": "General.codechef",
+            "projectName": "Coding_baa1ecc6"
+        },
+        {
+            "type": "java",
+            "name": "Launch allInOne",
+            "request": "launch",
+            "mainClass": "General.allInOne",
+            "projectName": "Coding_baa1ecc6"
+        },
+        {
+            "type": "java",
             "name": "Launch Solution",
             "request": "launch",
             "mainClass": "Solution",
